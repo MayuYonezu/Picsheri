@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="zRd-rh-Hld">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="XJM-du-7I8">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
@@ -17,12 +17,69 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="tintColor" red="0.20000000000000001" green="0.1960784314" blue="0.1843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="mMs-xO-CRl"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-579" y="106"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="hT5-T8-3cE">
+            <objects>
+                <navigationController id="B0y-Ck-Nm7" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="heart" catalog="system" selectedImage="heart.fill" id="Tby-fy-A7a"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="5dq-Vl-Uld">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="dZN-9d-6Jh" kind="relationship" relationship="rootViewController" id="Rqe-kQ-9dQ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZgF-nk-Bc6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2294" y="106"/>
+        </scene>
+        <!--Member View Controller-->
+        <scene sceneID="YVV-MH-Eix">
+            <objects>
+                <viewController id="dZN-9d-6Jh" customClass="MemberViewController" customModule="Picheri" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="BdR-Ij-nYp">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="7aa-tM-Q2v"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="tintColor" red="0.20000000000000001" green="0.1960784314" blue="0.1843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="" image="heart" catalog="system" selectedImage="heart.fill" id="CIc-eL-SKM">
+                        <color key="badgeColor" red="0.20000000000000001" green="0.1960784314" blue="0.1843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </tabBarItem>
+                    <navigationItem key="navigationItem" id="xwS-nA-clh"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lGE-9R-xNo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3187" y="106"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="skk-sj-LTd">
+            <objects>
+                <tabBarController id="XJM-du-7I8" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="5VD-OP-jKr"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="8Hq-30-w9C">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="B0y-Ck-Nm7" kind="relationship" relationship="viewControllers" id="f7x-bZ-QKM"/>
+                        <segue destination="MJf-r1-qhE" kind="relationship" relationship="viewControllers" id="esP-5Y-ENa"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nIO-Kq-I2k" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1204" y="106"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="dFp-L7-07s">
@@ -40,8 +97,46 @@
             </objects>
             <point key="canvasLocation" x="-1505" y="106"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="0SE-CD-Cbi">
+            <objects>
+                <navigationController id="MJf-r1-qhE" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="book" catalog="system" selectedImage="book.fill" id="IIk-0p-95U"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="gbk-Gf-ee7">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="6CU-yI-CYB" kind="relationship" relationship="rootViewController" id="3Ia-9a-uEv"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qeg-0N-weJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2294" y="842"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Eix-2X-QSB">
+            <objects>
+                <viewController id="6CU-yI-CYB" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="CgA-8n-TcF">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="nGS-pb-HRA"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="SV9-Ch-4xw"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WEW-Z7-6TS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3185" y="842"/>
+        </scene>
     </scenes>
+    <color key="tintColor" red="0.20000000000000001" green="0.1960784314" blue="0.1843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
     <resources>
+        <image name="book" catalog="system" width="128" height="99"/>
+        <image name="book.fill" catalog="system" width="128" height="95"/>
+        <image name="heart" catalog="system" width="128" height="107"/>
+        <image name="heart.fill" catalog="system" width="128" height="107"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

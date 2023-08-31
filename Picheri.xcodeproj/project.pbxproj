@@ -14,6 +14,7 @@
 		031346C62AA09C06009AAA0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 031346C52AA09C06009AAA0A /* Assets.xcassets */; };
 		031346C92AA09C06009AAA0A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 031346C72AA09C06009AAA0A /* LaunchScreen.storyboard */; };
 		031346D42AA09D77009AAA0A /* Shrikhand-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 031346D32AA09D77009AAA0A /* Shrikhand-Regular.otf */; };
+		031346D72AA0A01A009AAA0A /* MemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031346D62AA0A01A009AAA0A /* MemberViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		031346C82AA09C06009AAA0A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		031346CA2AA09C06009AAA0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		031346D32AA09D77009AAA0A /* Shrikhand-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Shrikhand-Regular.otf"; sourceTree = "<group>"; };
+		031346D62AA0A01A009AAA0A /* MemberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				031346C02AA09C05009AAA0A /* LoginViewController.swift */,
+				031346D62AA0A01A009AAA0A /* MemberViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -159,6 +162,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				031346C12AA09C05009AAA0A /* LoginViewController.swift in Sources */,
+				031346D72AA0A01A009AAA0A /* MemberViewController.swift in Sources */,
 				031346BD2AA09C05009AAA0A /* AppDelegate.swift in Sources */,
 				031346BF2AA09C05009AAA0A /* SceneDelegate.swift in Sources */,
 			);
