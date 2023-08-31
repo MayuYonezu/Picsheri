@@ -1,11 +1,14 @@
 import UIKit
 
-final class MemberViewController: UIViewController {
+final class MemberViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     private var profileButton: UIBarButtonItem!
     private var progress1View: UIProgressView!
     private var progress2View: UIProgressView!
     private var progress3View: UIProgressView!
+
+    private let reuseIdentifier = "Cell"
+    let images: [UIImage] = [UIImage(named: "Profile")!, UIImage(named: "Profile")!, UIImage(named: "Profile")!, UIImage(named: "Profile")!, UIImage(named: "Profile")!, UIImage(named: "Profile")!, UIImage(named: "Profile")!, UIImage(named: "Profile")!, UIImage(named: "Profile")!, UIImage(named: "Profile")!] // 表示する画像
 
     private let menber1Button: UIButton = {
         let button = UIButton()
@@ -66,12 +69,31 @@ final class MemberViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
+    private let memberCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal // スクロール方向を水平に設定
+        layout.minimumInteritemSpacing = 20 // セル間の横方向の最小間隔
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 100) // 画面幅に合わせたセルのサイズ
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0) // セクションインセットを0に設定
+
+        let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = UIColor(white: 0, alpha: 0)
+        collectionView.layer.shadowColor = UIColor(named: "mainGray")?.cgColor
+        collectionView.layer.shadowOpacity = 0.2
+        collectionView.layer.shadowOffset = CGSize(width: 2, height: 2)
+        collectionView.layer.shadowRadius = 5
+        return collectionView
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "mainYellow")
         setUpNavigation()
         setUp()
+        memberCollectionView.delegate = self
+        memberCollectionView.dataSource = self
     }
     
     private func setUpNavigation() {
@@ -113,6 +135,7 @@ final class MemberViewController: UIViewController {
         view.addSubview(menber2Label)
         view.addSubview(menber3Button)
         view.addSubview(menber3Label)
+        view.addSubview(memberCollectionView)
         
         // progress1Viewをインスタンス化
         progress1View = UIProgressView()
@@ -185,9 +208,42 @@ final class MemberViewController: UIViewController {
             progress3View.widthAnchor.constraint(equalToConstant: 80),
             progress3View.heightAnchor.constraint(equalToConstant: 5)
         ])
-        
+
+        NSLayoutConstraint.activate([
+            memberCollectionView.topAnchor.constraint(equalTo: progress3View.bottomAnchor, constant: 30),
+            memberCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            memberCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            memberCollectionView.heightAnchor.constraint(equalToConstant: 80)
+        ])
+
         progress1View.progress = 0.9 // 進捗を設定（0.0から1.0の間で指定）
         progress2View.progress = 0.3
         progress3View.progress = 0.2
+
+        memberCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return images.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
+        
+        let imageView = UIImageView(frame: cell.contentView.bounds)
+        imageView.image = images[indexPath.item]
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        cell.contentView.addSubview(imageView)
+        
+        return cell
+    }
+
+    // MARK: - UICollectionViewDelegateFlowLayout
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let cellWidth = 60 // セルの幅を計算
+        let cellHeight = 60 // セルの高さ
+        return CGSize(width: cellWidth, height: cellHeight)
     }
 }
