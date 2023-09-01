@@ -32,7 +32,6 @@ class MemoryViewController: UIViewController {
         let viewWidth = view.frame.width * 0.9
         let viewHeight = viewWidth * 4 / 3
         let spacing: CGFloat = 10
-        let totalSpacing = spacing * (CGFloat(numberOfViews) - 1)
         let horizontalSpacing: CGFloat = 10
         let verticalSpacing: CGFloat = 15
         
@@ -63,8 +62,6 @@ class MemoryViewController: UIViewController {
             addContentToWhiteView(whiteView)
         }
     }
-
-
 
     override func viewDidLoad() {
         super.viewDidLoad()

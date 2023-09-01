@@ -1,7 +1,10 @@
 import UIKit
+
 final class LoginViewController: UIViewController {
+
   private var setUpButton: UIBarButtonItem!
   private var isSetUpButtonTapped = false
+
   // titleLabel
   private let titleLabel: UILabel = {
     let label = UILabel()
@@ -11,6 +14,7 @@ final class LoginViewController: UIViewController {
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
+
   // mailAdressLabel
   private let mailAddressLabel: UILabel = {
     let label = UILabel()
@@ -20,6 +24,7 @@ final class LoginViewController: UIViewController {
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
+
   // mailAddressTextFiled
   private let mailAddressTextField: UITextField = {
     let textField = UITextField()
@@ -27,6 +32,7 @@ final class LoginViewController: UIViewController {
     textField.translatesAutoresizingMaskIntoConstraints = false
     return textField
   }()
+
   // mailAddressTextFiledのアンダーライン
   private let mailAddressTextFieldUnderlineView: UIView = {
     let view = UIView()
@@ -34,6 +40,7 @@ final class LoginViewController: UIViewController {
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
+
   // passWordLabel
   private let passWordLabel: UILabel = {
     let label = UILabel()
@@ -43,6 +50,7 @@ final class LoginViewController: UIViewController {
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
+
   // passWordTextFiled
   private let passWordTextField: UITextField = {
     let textField = UITextField()
@@ -50,6 +58,7 @@ final class LoginViewController: UIViewController {
     textField.translatesAutoresizingMaskIntoConstraints = false
     return textField
   }()
+
   // mailAddressTextFiledのアンダーライン
   private let passWordTextFieldUnderlineView: UIView = {
     let view = UIView()
@@ -57,6 +66,7 @@ final class LoginViewController: UIViewController {
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
+
   // nameLabel
   private let nameLabel: UILabel = {
     let label = UILabel()
@@ -66,6 +76,7 @@ final class LoginViewController: UIViewController {
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
+
   // titleTextFiled
   private let nameTextField: UITextField = {
     let textField = UITextField()
@@ -73,6 +84,7 @@ final class LoginViewController: UIViewController {
     textField.translatesAutoresizingMaskIntoConstraints = false
     return textField
   }()
+
   // titleTextFiledのアンダーライン
   private let nameTextFieldUnderlineView: UIView = {
     let view = UIView()
@@ -80,6 +92,7 @@ final class LoginViewController: UIViewController {
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
+
   // LoginButton
   private let loginButton: UIButton = {
     let button = UIButton()
@@ -95,11 +108,13 @@ final class LoginViewController: UIViewController {
     button.layer.shadowRadius = 5
     return button
   }()
+
   override func viewDidLoad() {
     super.viewDidLoad()
       view.backgroundColor = UIColor(named: "mainYellow")
     setUp()
   }
+
   func setUp() {
     setUpNavigation()
     view.addSubview(titleLabel)
@@ -112,6 +127,7 @@ final class LoginViewController: UIViewController {
     view.addSubview(loginButton)
     setUpLoginConstraints()
   }
+
   private func ResetUpView() {
     mailAddressLabel.removeFromSuperview()
     mailAddressTextField.removeFromSuperview()
@@ -123,6 +139,7 @@ final class LoginViewController: UIViewController {
     nameTextField.removeFromSuperview()
     nameTextFieldUnderlineView.removeFromSuperview()
   }
+
   func setUpNavigation() {
     // サインアップボタンを作成
     setUpButton = UIBarButtonItem(title: "signup", style: .plain, target: self, action: #selector(setButtonTapped))
@@ -141,6 +158,7 @@ final class LoginViewController: UIViewController {
     // ボタンをナビゲーションバーに追加
     navigationItem.rightBarButtonItem = setUpButton
   }
+
   // ボタンのアクション
   @objc func setButtonTapped() {
     isSetUpButtonTapped.toggle()
@@ -160,6 +178,7 @@ final class LoginViewController: UIViewController {
       setUp()
     }
   }
+
   private func setUpConstraints() {
     NSLayoutConstraint.activate([
       titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
@@ -181,6 +200,7 @@ final class LoginViewController: UIViewController {
       mailAddressTextFieldUnderlineView.heightAnchor.constraint(equalToConstant: 1)
     ])
   }
+
   private func setUpLoginConstraints() {
     view.addSubview(mailAddressLabel)
     view.addSubview(mailAddressTextField)
@@ -212,6 +232,7 @@ final class LoginViewController: UIViewController {
       loginButton.heightAnchor.constraint(equalToConstant: 45)
     ])
   }
+
   private func setUpSignUpConstraints() {
     view.addSubview(mailAddressLabel)
     view.addSubview(mailAddressTextField)
@@ -223,36 +244,43 @@ final class LoginViewController: UIViewController {
     view.addSubview(nameTextField)
     view.addSubview(nameTextFieldUnderlineView)
     setUpConstraints()
+
     NSLayoutConstraint.activate([
       nameLabel.topAnchor.constraint(equalTo: mailAddressTextFieldUnderlineView.bottomAnchor, constant: 30),
       nameLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30),
     ])
+
     NSLayoutConstraint.activate([
       nameTextField.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 3),
       nameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
       nameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30)
     ])
+
     NSLayoutConstraint.activate([
       nameTextFieldUnderlineView.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 5),
       nameTextFieldUnderlineView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
       nameTextFieldUnderlineView.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor),
       nameTextFieldUnderlineView.heightAnchor.constraint(equalToConstant: 1)
     ])
+
     NSLayoutConstraint.activate([
       passWordLabel.topAnchor.constraint(equalTo: nameTextFieldUnderlineView.bottomAnchor, constant: 30),
       passWordLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30),
     ])
+
     NSLayoutConstraint.activate([
       passWordTextField.topAnchor.constraint(equalTo: passWordLabel.bottomAnchor, constant: 3),
       passWordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
       passWordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30)
     ])
+
     NSLayoutConstraint.activate([
       passWordTextFieldUnderlineView.topAnchor.constraint(equalTo: passWordTextField.bottomAnchor, constant: 5),
       passWordTextFieldUnderlineView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
       passWordTextFieldUnderlineView.trailingAnchor.constraint(equalTo: passWordTextField.trailingAnchor),
       passWordTextFieldUnderlineView.heightAnchor.constraint(equalToConstant: 1)
     ])
+
     NSLayoutConstraint.activate([
       loginButton.topAnchor.constraint(equalTo: passWordTextFieldUnderlineView.bottomAnchor, constant: 50),
       loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),

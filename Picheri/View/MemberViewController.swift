@@ -49,7 +49,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         button.layer.borderColor = UIColor.white.cgColor
         return button
     }()
-    
+
     private let menber2Label: UILabel = {
         let label = UILabel()
         label.text = "name"
@@ -58,7 +58,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private let menber3Button: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "profile"), for: .normal)
@@ -74,7 +74,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         button.layer.borderColor = UIColor.white.cgColor
         return button
     }()
-    
+
     private let menber3Label: UILabel = {
         let label = UILabel()
         label.text = "name"
@@ -102,7 +102,6 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         return collectionView
     }()
 
-
     private let plusButton: UIButton = {
         let button = UIButton()
         let imageSize = CGSize(width: 50, height: 50) // 画像のサイズを設定
@@ -124,29 +123,30 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         setUp()
         memberCollectionView.delegate = self
         memberCollectionView.dataSource = self
-
     }
-    
+
     private func setUpNavigation() {
         // サインアップボタンを作成
         profileButton = UIBarButtonItem(image: UIImage(systemName: "person.crop.circle.fill"), style: .plain, target: self, action: #selector(profileButtonTapped))
+
         // カスタムフォントを適用したいタイトルフォントを設定
         let font = UIFont.systemFont(ofSize: 12) // フォントサイズを指定
         let normalAttributes: [NSAttributedString.Key: Any] = [
             .font: font,
             .foregroundColor: UIColor(named: "subGray") ?? UIColor.lightGray // カスタムのボタンタイトル色
         ]
+
         profileButton.setTitleTextAttributes(normalAttributes, for: .normal)
         let highlightedAttributes: [NSAttributedString.Key: Any] = [
             .font: font,
             .foregroundColor: UIColor(named: "subGray") ?? UIColor.lightGray // カスタムのタップ時のタイトル色
         ]
+
         profileButton.setTitleTextAttributes(highlightedAttributes, for: .highlighted)
         // ボタンをナビゲーションバーに追加
         navigationItem.rightBarButtonItem = profileButton
-        
         navigationItem.title = "Ranking"
-        
+
         // タイトルのフォントを変更
         let titleAttributes: [NSAttributedString.Key: Any] = [
             .font: UIFont(name: "Shrikhand-Regular", size: 24) ?? .systemFont(ofSize: 24) // 任意のフォントとサイズに変更
@@ -156,7 +156,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
     
     // ボタンのアクション
     @objc func profileButtonTapped() {
-        
+
     }
     
     private func setUp() {
@@ -193,50 +193,50 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
             menber1Button.widthAnchor.constraint(equalToConstant: 100),
             menber1Button.heightAnchor.constraint(equalToConstant: 100)
         ])
-        
+
         NSLayoutConstraint.activate([
             menber1Label.topAnchor.constraint(equalTo: menber1Button.bottomAnchor, constant: 10),
             menber1Label.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0)
         ])
-        
+
         NSLayoutConstraint.activate([
             progress1View.topAnchor.constraint(equalTo: menber1Label.bottomAnchor, constant: 10),
             progress1View.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
             progress1View.widthAnchor.constraint(equalToConstant: 100),
             progress1View.heightAnchor.constraint(equalToConstant: 5)
         ])
-        
+
         NSLayoutConstraint.activate([
             menber2Button.topAnchor.constraint(equalTo: progress1View.bottomAnchor, constant: 30),
             menber2Button.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -90),
             menber2Button.widthAnchor.constraint(equalToConstant: 80),
             menber2Button.heightAnchor.constraint(equalToConstant: 80)
         ])
-        
+
         NSLayoutConstraint.activate([
             menber2Label.topAnchor.constraint(equalTo: menber2Button.bottomAnchor, constant: 10),
             menber2Label.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -90)
         ])
-        
+
         NSLayoutConstraint.activate([
             progress2View.topAnchor.constraint(equalTo: menber2Label.bottomAnchor, constant: 10),
             progress2View.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -90),
             progress2View.widthAnchor.constraint(equalToConstant: 80),
             progress2View.heightAnchor.constraint(equalToConstant: 5)
         ])
-        
+
         NSLayoutConstraint.activate([
             menber3Button.topAnchor.constraint(equalTo: progress1View.bottomAnchor, constant: 30),
             menber3Button.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 90),
             menber3Button.widthAnchor.constraint(equalToConstant: 80),
             menber3Button.heightAnchor.constraint(equalToConstant: 80)
         ])
-        
+
         NSLayoutConstraint.activate([
             menber3Label.topAnchor.constraint(equalTo: menber3Button.bottomAnchor, constant: 10),
             menber3Label.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 90)
         ])
-        
+
         NSLayoutConstraint.activate([
             progress3View.topAnchor.constraint(equalTo: menber3Label.bottomAnchor, constant: 10),
             progress3View.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 90),
@@ -262,7 +262,8 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
             ])
         }
 
-        progress1View.progress = 0.9 // 進捗を設定（0.0から1.0の間で指定）
+        // 貢献度
+        progress1View.progress = 0.9
         progress2View.progress = 0.3
         progress3View.progress = 0.2
 
@@ -286,11 +287,8 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         imageView.layer.borderWidth = 2
         imageView.layer.borderColor = UIColor.white.cgColor
         cell.contentView.addSubview(imageView)
-        
         return cell
     }
-
-    // MARK: - UICollectionViewDelegateFlowLayout
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let cellWidth = 60 // セルの幅を計算
