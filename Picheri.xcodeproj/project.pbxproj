@@ -17,6 +17,7 @@
 		031346D72AA0A01A009AAA0A /* MemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031346D62AA0A01A009AAA0A /* MemberViewController.swift */; };
 		031346D92AA1B54B009AAA0A /* MemoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031346D82AA1B54B009AAA0A /* MemoryViewController.swift */; };
 		031346DB2AA22A5D009AAA0A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031346DA2AA22A5D009AAA0A /* ProfileViewController.swift */; };
+		031346DD2AA23402009AAA0A /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031346DC2AA23402009AAA0A /* PostViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		031346D62AA0A01A009AAA0A /* MemberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberViewController.swift; sourceTree = "<group>"; };
 		031346D82AA1B54B009AAA0A /* MemoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryViewController.swift; sourceTree = "<group>"; };
 		031346DA2AA22A5D009AAA0A /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		031346DC2AA23402009AAA0A /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 				031346D62AA0A01A009AAA0A /* MemberViewController.swift */,
 				031346D82AA1B54B009AAA0A /* MemoryViewController.swift */,
 				031346DA2AA22A5D009AAA0A /* ProfileViewController.swift */,
+				031346DC2AA23402009AAA0A /* PostViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -169,6 +172,7 @@
 			files = (
 				031346DB2AA22A5D009AAA0A /* ProfileViewController.swift in Sources */,
 				031346C12AA09C05009AAA0A /* LoginViewController.swift in Sources */,
+				031346DD2AA23402009AAA0A /* PostViewController.swift in Sources */,
 				031346D72AA0A01A009AAA0A /* MemberViewController.swift in Sources */,
 				031346BD2AA09C05009AAA0A /* AppDelegate.swift in Sources */,
 				031346BF2AA09C05009AAA0A /* SceneDelegate.swift in Sources */,
