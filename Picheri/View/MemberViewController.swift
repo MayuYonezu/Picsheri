@@ -72,10 +72,10 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
 
     private let memberCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal // スクロール方向を水平に設定
-        layout.minimumInteritemSpacing = 20 // セル間の横方向の最小間隔
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 100) // 画面幅に合わせたセルのサイズ
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0) // セクションインセットを0に設定
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 20
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 100)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20) // 左側にスペースを設定
 
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -84,8 +84,10 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         collectionView.layer.shadowOpacity = 0.2
         collectionView.layer.shadowOffset = CGSize(width: 2, height: 2)
         collectionView.layer.shadowRadius = 5
+        collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
+
 
     private let plusButton: UIButton = {
         let button = UIButton()
@@ -101,7 +103,6 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         return button
     }()
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "mainYellow")
@@ -109,6 +110,8 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         setUp()
         memberCollectionView.delegate = self
         memberCollectionView.dataSource = self
+        // メモリービューを開いたときに少し右側にスクロール
+
     }
     
     private func setUpNavigation() {
@@ -166,7 +169,11 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         progress3View = UIProgressView()
         progress3View.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(progress3View)
-        
+
+        // メモリービューを開いたときに少し右側にスクロール
+        let xOffset = CGFloat(20) // スクロールする横方向のオフセット
+        memberCollectionView.setContentOffset(CGPoint(x: xOffset, y: 0), animated: false)
+
         NSLayoutConstraint.activate([
             menber1Button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             menber1Button.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
@@ -226,8 +233,8 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
 
         NSLayoutConstraint.activate([
             memberCollectionView.topAnchor.constraint(equalTo: progress3View.bottomAnchor, constant: 30),
-            memberCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            memberCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            memberCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            memberCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             memberCollectionView.heightAnchor.constraint(equalToConstant: 80)
         ])
 
@@ -255,7 +262,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-        
+
         let imageView = UIImageView(frame: cell.contentView.bounds)
         imageView.image = images[indexPath.item]
         imageView.contentMode = .scaleAspectFill

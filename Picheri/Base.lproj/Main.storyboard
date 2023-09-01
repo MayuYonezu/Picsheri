@@ -114,10 +114,10 @@
             </objects>
             <point key="canvasLocation" x="2294" y="842"/>
         </scene>
-        <!--View Controller-->
+        <!--Memory View Controller-->
         <scene sceneID="Eix-2X-QSB">
             <objects>
-                <viewController id="6CU-yI-CYB" sceneMemberID="viewController">
+                <viewController id="6CU-yI-CYB" customClass="MemoryViewController" customModule="Picheri" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="CgA-8n-TcF">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
