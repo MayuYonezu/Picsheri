@@ -9,21 +9,33 @@
 /* Begin PBXBuildFile section */
 		031346BD2AA09C05009AAA0A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031346BC2AA09C05009AAA0A /* AppDelegate.swift */; };
 		031346BF2AA09C05009AAA0A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031346BE2AA09C05009AAA0A /* SceneDelegate.swift */; };
-		031346C12AA09C05009AAA0A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031346C02AA09C05009AAA0A /* ViewController.swift */; };
+		031346C12AA09C05009AAA0A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031346C02AA09C05009AAA0A /* LoginViewController.swift */; };
 		031346C42AA09C05009AAA0A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 031346C22AA09C05009AAA0A /* Main.storyboard */; };
 		031346C62AA09C06009AAA0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 031346C52AA09C06009AAA0A /* Assets.xcassets */; };
 		031346C92AA09C06009AAA0A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 031346C72AA09C06009AAA0A /* LaunchScreen.storyboard */; };
+		031346D42AA09D77009AAA0A /* Shrikhand-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 031346D32AA09D77009AAA0A /* Shrikhand-Regular.otf */; };
+		031346D72AA0A01A009AAA0A /* MemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031346D62AA0A01A009AAA0A /* MemberViewController.swift */; };
+		031346D92AA1B54B009AAA0A /* MemoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031346D82AA1B54B009AAA0A /* MemoryViewController.swift */; };
+		031346DB2AA22A5D009AAA0A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031346DA2AA22A5D009AAA0A /* ProfileViewController.swift */; };
+		031346DD2AA23402009AAA0A /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031346DC2AA23402009AAA0A /* PostViewController.swift */; };
+		036243BD2AA24ECF00C5D807 /* MemberProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036243BC2AA24ECF00C5D807 /* MemberProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		031346B92AA09C05009AAA0A /* Picheri.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Picheri.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		031346BC2AA09C05009AAA0A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		031346BE2AA09C05009AAA0A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		031346C02AA09C05009AAA0A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		031346C02AA09C05009AAA0A /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		031346C32AA09C05009AAA0A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		031346C52AA09C06009AAA0A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		031346C82AA09C06009AAA0A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		031346CA2AA09C06009AAA0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		031346D32AA09D77009AAA0A /* Shrikhand-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Shrikhand-Regular.otf"; sourceTree = "<group>"; };
+		031346D62AA0A01A009AAA0A /* MemberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberViewController.swift; sourceTree = "<group>"; };
+		031346D82AA1B54B009AAA0A /* MemoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryViewController.swift; sourceTree = "<group>"; };
+		031346DA2AA22A5D009AAA0A /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		031346DC2AA23402009AAA0A /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
+		036243BC2AA24ECF00C5D807 /* MemberProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +68,37 @@
 		031346BB2AA09C05009AAA0A /* Picheri */ = {
 			isa = PBXGroup;
 			children = (
+				031346D12AA09D4F009AAA0A /* Fonts */,
+				031346D02AA09D1D009AAA0A /* View */,
 				031346BC2AA09C05009AAA0A /* AppDelegate.swift */,
 				031346BE2AA09C05009AAA0A /* SceneDelegate.swift */,
-				031346C02AA09C05009AAA0A /* ViewController.swift */,
 				031346C22AA09C05009AAA0A /* Main.storyboard */,
 				031346C52AA09C06009AAA0A /* Assets.xcassets */,
 				031346C72AA09C06009AAA0A /* LaunchScreen.storyboard */,
 				031346CA2AA09C06009AAA0A /* Info.plist */,
 			);
 			path = Picheri;
+			sourceTree = "<group>";
+		};
+		031346D02AA09D1D009AAA0A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				031346C02AA09C05009AAA0A /* LoginViewController.swift */,
+				031346D62AA0A01A009AAA0A /* MemberViewController.swift */,
+				031346D82AA1B54B009AAA0A /* MemoryViewController.swift */,
+				031346DA2AA22A5D009AAA0A /* ProfileViewController.swift */,
+				031346DC2AA23402009AAA0A /* PostViewController.swift */,
+				036243BC2AA24ECF00C5D807 /* MemberProfileViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		031346D12AA09D4F009AAA0A /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				031346D32AA09D77009AAA0A /* Shrikhand-Regular.otf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -128,6 +162,7 @@
 				031346C92AA09C06009AAA0A /* LaunchScreen.storyboard in Resources */,
 				031346C62AA09C06009AAA0A /* Assets.xcassets in Resources */,
 				031346C42AA09C05009AAA0A /* Main.storyboard in Resources */,
+				031346D42AA09D77009AAA0A /* Shrikhand-Regular.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,9 +173,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				031346C12AA09C05009AAA0A /* ViewController.swift in Sources */,
+				031346DB2AA22A5D009AAA0A /* ProfileViewController.swift in Sources */,
+				031346C12AA09C05009AAA0A /* LoginViewController.swift in Sources */,
+				031346DD2AA23402009AAA0A /* PostViewController.swift in Sources */,
+				031346D72AA0A01A009AAA0A /* MemberViewController.swift in Sources */,
+				036243BD2AA24ECF00C5D807 /* MemberProfileViewController.swift in Sources */,
 				031346BD2AA09C05009AAA0A /* AppDelegate.swift in Sources */,
 				031346BF2AA09C05009AAA0A /* SceneDelegate.swift in Sources */,
+				031346D92AA1B54B009AAA0A /* MemoryViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
