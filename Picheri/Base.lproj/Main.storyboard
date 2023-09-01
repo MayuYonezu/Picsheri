@@ -65,19 +65,19 @@
         <!--Tab Bar Controller-->
         <scene sceneID="skk-sj-LTd">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nIO-Kq-I2k" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <tabBarController id="XJM-du-7I8" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="5VD-OP-jKr"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="8Hq-30-w9C">
+                    <tabBar key="tabBar" autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="8Hq-30-w9C">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="1" green="0.96862745100000003" blue="0.92549019610000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="B0y-Ck-Nm7" kind="relationship" relationship="viewControllers" id="f7x-bZ-QKM"/>
                         <segue destination="MJf-r1-qhE" kind="relationship" relationship="viewControllers" id="esP-5Y-ENa"/>
                     </connections>
                 </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="nIO-Kq-I2k" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1204" y="106"/>
         </scene>

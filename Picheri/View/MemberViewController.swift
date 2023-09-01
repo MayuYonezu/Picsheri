@@ -87,6 +87,21 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         return collectionView
     }()
 
+    private let plusButton: UIButton = {
+        let button = UIButton()
+        let imageSize = CGSize(width: 50, height: 50) // 画像のサイズを設定
+        let buttonImage = UIImage(named: "plus")
+        button.setImage(buttonImage, for: .normal)
+        button.tintColor = UIColor(named: "mainGray") // ボタンの色を設定
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.shadowColor = UIColor(named: "mainGray")?.cgColor
+        button.layer.shadowOpacity = 0.2
+        button.layer.shadowOffset = CGSize(width: 2, height: 2)
+        button.layer.shadowRadius = 5
+        return button
+    }()
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "mainYellow")
@@ -215,6 +230,17 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
             memberCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             memberCollectionView.heightAnchor.constraint(equalToConstant: 80)
         ])
+
+        if let tabBarSuperview = tabBarController?.view {
+            tabBarSuperview.addSubview(plusButton)
+            // 中央に配置する制約を設定
+            NSLayoutConstraint.activate([
+                plusButton.centerXAnchor.constraint(equalTo: tabBarSuperview.centerXAnchor),
+                plusButton.bottomAnchor.constraint(equalTo: tabBarSuperview.bottomAnchor, constant: -50), // タブバーの少し上に配置
+                plusButton.widthAnchor.constraint(equalToConstant: 60),
+                plusButton.heightAnchor.constraint(equalToConstant: 60)
+            ])
+        }
 
         progress1View.progress = 0.9 // 進捗を設定（0.0から1.0の間で指定）
         progress2View.progress = 0.3
