@@ -87,9 +87,8 @@ class MemoryViewController: UIViewController {
         profileButton.setTitleTextAttributes(highlightedAttributes, for: .highlighted)
         // ボタンをナビゲーションバーに追加
         navigationItem.rightBarButtonItem = profileButton
-        
         navigationItem.title = "Memory"
-        
+
         // タイトルのフォントを変更
         let titleAttributes: [NSAttributedString.Key: Any] = [
             .font: UIFont(name: "Shrikhand-Regular", size: 24) ?? .systemFont(ofSize: 24) // 任意のフォントとサイズに変更
