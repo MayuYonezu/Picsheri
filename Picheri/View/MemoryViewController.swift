@@ -45,7 +45,7 @@ class MemoryViewController: UIViewController {
             scrollView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1),
             scrollView.heightAnchor.constraint(equalToConstant: viewHeight + 2 * verticalSpacing),
             scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
         ])
         
         for i in 0..<numberOfViews {
@@ -69,23 +69,8 @@ class MemoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "mainYellow")
-        setUp()
         setUpNavigation()
         setUpScrollView()
- 
-    }
-
-    private func setUp() {
-        if let tabBarSuperview = tabBarController?.view {
-            tabBarSuperview.addSubview(plusButton)
-            // 中央に配置する制約を設定
-            NSLayoutConstraint.activate([
-                plusButton.centerXAnchor.constraint(equalTo: tabBarSuperview.centerXAnchor),
-                plusButton.bottomAnchor.constraint(equalTo: tabBarSuperview.bottomAnchor, constant: -50), // タブバーの少し上に配置
-                plusButton.widthAnchor.constraint(equalToConstant: 60),
-                plusButton.heightAnchor.constraint(equalToConstant: 60)
-            ])
-        }
     }
 
     private func setUpNavigation() {
@@ -133,6 +118,7 @@ class MemoryViewController: UIViewController {
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.text = "name"
         nameLabel.font = UIFont.systemFont(ofSize: 14)
+        nameLabel.textColor = UIColor(named: "mainGray") ?? UIColor.lightGray
 
         let postImageView = UIImageView()
         postImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -145,12 +131,14 @@ class MemoryViewController: UIViewController {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "title"
         titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        titleLabel.textColor = UIColor(named: "mainGray") ?? UIColor.lightGray
 
         let commentTextView = UITextView()
         commentTextView.translatesAutoresizingMaskIntoConstraints = false
         commentTextView.text = "comment"
         commentTextView.font = UIFont.systemFont(ofSize: 12)
         commentTextView.isUserInteractionEnabled = false
+        commentTextView.textColor = UIColor(named: "mainGray") ?? UIColor.lightGray
 
 
         whiteView.addSubview(profileImageView)

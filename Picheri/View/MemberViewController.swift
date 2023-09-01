@@ -145,7 +145,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         // ボタンをナビゲーションバーに追加
         navigationItem.rightBarButtonItem = profileButton
         
-        navigationItem.title = "Member"
+        navigationItem.title = "Ranking"
         
         // タイトルのフォントを変更
         let titleAttributes: [NSAttributedString.Key: Any] = [
@@ -256,7 +256,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
             // 中央に配置する制約を設定
             NSLayoutConstraint.activate([
                 plusButton.centerXAnchor.constraint(equalTo: tabBarSuperview.centerXAnchor),
-                plusButton.bottomAnchor.constraint(equalTo: tabBarSuperview.bottomAnchor, constant: -50), // タブバーの少し上に配置
+                plusButton.bottomAnchor.constraint(equalTo: tabBarSuperview.bottomAnchor, constant: -30), // タブバーの少し上に配置
                 plusButton.widthAnchor.constraint(equalToConstant: 60),
                 plusButton.heightAnchor.constraint(equalToConstant: 60)
             ])
