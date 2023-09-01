@@ -25,11 +25,11 @@
             </objects>
             <point key="canvasLocation" x="-579" y="106"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--推し-->
         <scene sceneID="hT5-T8-3cE">
             <objects>
                 <navigationController id="B0y-Ck-Nm7" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="heart" catalog="system" selectedImage="heart.fill" id="Tby-fy-A7a"/>
+                    <tabBarItem key="tabBarItem" title="推し" image="heart" catalog="system" selectedImage="heart.fill" id="Tby-fy-A7a"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="5dq-Vl-Uld">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -97,11 +97,11 @@
             </objects>
             <point key="canvasLocation" x="-1505" y="106"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--記録-->
         <scene sceneID="0SE-CD-Cbi">
             <objects>
                 <navigationController id="MJf-r1-qhE" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="book" catalog="system" selectedImage="book.fill" id="IIk-0p-95U"/>
+                    <tabBarItem key="tabBarItem" title="記録" image="book" catalog="system" selectedImage="book.fill" id="IIk-0p-95U"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="gbk-Gf-ee7">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

@@ -8,19 +8,23 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
     private var progress3View: UIProgressView!
 
     private let reuseIdentifier = "Cell"
-    let images: [UIImage] = [UIImage(named: "Profile")!, UIImage(named: "Profile")!, UIImage(named: "Profile")!, UIImage(named: "Profile")!, UIImage(named: "Profile")!, UIImage(named: "Profile")!, UIImage(named: "Profile")!, UIImage(named: "Profile")!, UIImage(named: "Profile")!, UIImage(named: "Profile")!] // 表示する画像
+    let images: [UIImage] = [UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!] // 表示する画像
 
     private let menber1Button: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "Profile"), for: .normal)
+        button.setImage(UIImage(named: "profile"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.shadowColor = UIColor(named: "mainGray")?.cgColor
         button.layer.shadowOpacity = 0.2
         button.layer.shadowOffset = CGSize(width: 2, height: 2)
-        button.layer.shadowRadius = 5
+        button.layer.masksToBounds = true // クリッピングを有効にする
+        button.layer.cornerRadius = 50 // 半径の半分を指定して円形にクリッピング
+        // 白い縁の設定
+        button.layer.borderWidth = 5
+        button.layer.borderColor = UIColor.white.cgColor
         return button
     }()
-    
+
     private let menber1Label: UILabel = {
         let label = UILabel()
         label.text = "name"
@@ -32,12 +36,17 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
     
     private let menber2Button: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "Profile"), for: .normal)
+        button.setImage(UIImage(named: "profile"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.shadowColor = UIColor(named: "mainGray")?.cgColor
         button.layer.shadowOpacity = 0.2
         button.layer.shadowOffset = CGSize(width: 2, height: 2)
-        button.layer.shadowRadius = 5
+        button.layer.masksToBounds = true // クリッピングを有効にする
+        button.layer.masksToBounds = true // クリッピングを有効にする
+        button.layer.cornerRadius = 40 // 半径の半分を指定して円形にクリッピング
+        // 白い縁の設定
+        button.layer.borderWidth = 4
+        button.layer.borderColor = UIColor.white.cgColor
         return button
     }()
     
@@ -52,12 +61,17 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
     
     private let menber3Button: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "Profile"), for: .normal)
+        button.setImage(UIImage(named: "profile"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.shadowColor = UIColor(named: "mainGray")?.cgColor
         button.layer.shadowOpacity = 0.2
         button.layer.shadowOffset = CGSize(width: 2, height: 2)
-        button.layer.shadowRadius = 5
+        button.layer.masksToBounds = true // クリッピングを有効にする
+        button.layer.masksToBounds = true // クリッピングを有効にする
+        button.layer.cornerRadius = 40 // 半径の半分を指定して円形にクリッピング
+        // 白い縁の設定
+        button.layer.borderWidth = 4
+        button.layer.borderColor = UIColor.white.cgColor
         return button
     }()
     
@@ -110,7 +124,6 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         setUp()
         memberCollectionView.delegate = self
         memberCollectionView.dataSource = self
-        // メモリービューを開いたときに少し右側にスクロール
 
     }
     
@@ -132,7 +145,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         // ボタンをナビゲーションバーに追加
         navigationItem.rightBarButtonItem = profileButton
         
-        title = "Member"
+        navigationItem.title = "Member"
         
         // タイトルのフォントを変更
         let titleAttributes: [NSAttributedString.Key: Any] = [
@@ -267,6 +280,11 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         imageView.image = images[indexPath.item]
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 30 // 半径の半分を指定して円形にクリッピング
+        imageView.layer.masksToBounds = true // クリッピングを有効にする
+        // 白い縁の設定
+        imageView.layer.borderWidth = 2
+        imageView.layer.borderColor = UIColor.white.cgColor
         cell.contentView.addSubview(imageView)
         
         return cell

@@ -22,7 +22,7 @@ class MemoryViewController: UIViewController {
     private func setUpScrollView() {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 10)
         view.addSubview(scrollView)
         // メモリービューを開いたときに少し右側にスクロール
         let xOffset = CGFloat(-20) // スクロールする横方向のオフセット
@@ -60,10 +60,7 @@ class MemoryViewController: UIViewController {
             whiteView.layer.shadowOffset = CGSize(width: 2, height: 2)
             whiteView.layer.shadowRadius = 5
             scrollView.addSubview(whiteView)
-            
-            
-            // Add content to whiteView
-            // ...
+            addContentToWhiteView(whiteView)
         }
     }
 
@@ -75,7 +72,7 @@ class MemoryViewController: UIViewController {
         setUp()
         setUpNavigation()
         setUpScrollView()
-
+ 
     }
 
     private func setUp() {
@@ -109,7 +106,7 @@ class MemoryViewController: UIViewController {
         // ボタンをナビゲーションバーに追加
         navigationItem.rightBarButtonItem = profileButton
         
-        title = "Memory"
+        navigationItem.title = "Memory"
         
         // タイトルのフォントを変更
         let titleAttributes: [NSAttributedString.Key: Any] = [
@@ -121,6 +118,77 @@ class MemoryViewController: UIViewController {
     // ボタンのアクション
     @objc func profileButtonTapped() {
         
+    }
+
+    private func addContentToWhiteView(_ whiteView: UIView) {
+        let profileImageView = UIImageView()
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        profileImageView.image = UIImage(named: "profile") // 画像名に適切な名前を入れてください
+        profileImageView.contentMode = .scaleAspectFill
+        profileImageView.clipsToBounds = true
+        profileImageView.layer.masksToBounds = true // クリッピングを有効にする
+        profileImageView.layer.cornerRadius = 15 // 半径の半分を指定して円形にクリッピング
+
+        let nameLabel = UILabel()
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.text = "name"
+        nameLabel.font = UIFont.systemFont(ofSize: 14)
+
+        let postImageView = UIImageView()
+        postImageView.translatesAutoresizingMaskIntoConstraints = false
+        postImageView.backgroundColor = UIColor(named: "subGray")
+        // Aspect ratio constraint for 4:3
+        let aspectRatioConstraint = postImageView.widthAnchor.constraint(equalTo: postImageView.heightAnchor, multiplier: 4.0/3.0)
+        aspectRatioConstraint.priority = .required // Make sure this constraint is satisfied
+
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = "title"
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
+
+        let commentTextView = UITextView()
+        commentTextView.translatesAutoresizingMaskIntoConstraints = false
+        commentTextView.text = "comment"
+        commentTextView.font = UIFont.systemFont(ofSize: 12)
+        commentTextView.isUserInteractionEnabled = false
+
+
+        whiteView.addSubview(profileImageView)
+        whiteView.addSubview(nameLabel)
+        whiteView.addSubview(postImageView)
+        whiteView.addSubview(titleLabel)
+        whiteView.addSubview(commentTextView)
+
+        NSLayoutConstraint.activate([
+            profileImageView.topAnchor.constraint(equalTo: whiteView.topAnchor, constant: 15),
+            profileImageView.leadingAnchor.constraint(equalTo: whiteView.leadingAnchor, constant: 15),
+            profileImageView.widthAnchor.constraint(equalToConstant: 30),
+            profileImageView.heightAnchor.constraint(equalToConstant: 30)
+        ])
+
+        NSLayoutConstraint.activate([
+            nameLabel.topAnchor.constraint(equalTo: whiteView.topAnchor, constant: 22),
+            nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10)
+        ])
+
+        NSLayoutConstraint.activate([
+            aspectRatioConstraint, // Activate the aspect ratio constraint
+            postImageView.centerXAnchor.constraint(equalTo: whiteView.centerXAnchor),
+            postImageView.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 10),
+            postImageView.widthAnchor.constraint(equalTo: whiteView.widthAnchor, multiplier: 0.9) // 90% width of whiteView
+        ])
+
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: 10),
+            titleLabel.leadingAnchor.constraint(equalTo: whiteView.leadingAnchor, constant: 16)
+        ])
+
+        NSLayoutConstraint.activate([
+            commentTextView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0),
+            commentTextView.leadingAnchor.constraint(equalTo: whiteView.leadingAnchor, constant: 10),
+            commentTextView.trailingAnchor.constraint(equalTo: whiteView.trailingAnchor, constant: -10),
+            commentTextView.bottomAnchor.constraint(equalTo: whiteView.bottomAnchor, constant: -15)
+        ])
     }
 
 }
