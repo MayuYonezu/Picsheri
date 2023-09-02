@@ -1,6 +1,8 @@
 import UIKit
 
-final class LoginViewController: UIViewController {
+final class LoginViewController: UIViewController, LoginView {
+
+  var presenter: LoginPresenter!
 
   private var setUpButton: UIBarButtonItem!
   private var isSetUpButtonTapped = false
@@ -30,6 +32,8 @@ final class LoginViewController: UIViewController {
     let textField = UITextField()
     textField.font = UIFont.systemFont(ofSize: 14)
     textField.translatesAutoresizingMaskIntoConstraints = false
+    textField.clearButtonMode = .whileEditing
+    textField.keyboardType = .emailAddress
     return textField
   }()
 
@@ -56,6 +60,8 @@ final class LoginViewController: UIViewController {
     let textField = UITextField()
     textField.font = UIFont.systemFont(ofSize: 14)
     textField.translatesAutoresizingMaskIntoConstraints = false
+    textField.isSecureTextEntry = true
+    textField.clearButtonMode = .whileEditing
     return textField
   }()
 
@@ -112,10 +118,13 @@ final class LoginViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
       view.backgroundColor = UIColor(named: "mainYellow")
-    setUp()
+      loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
+      setUpContents()
+      setupKeyboardToolbar()
+      presenter = LoginPresenter(view: self)
   }
 
-  func setUp() {
+  func setUpContents() {
     setUpNavigation()
     view.addSubview(titleLabel)
     view.addSubview(mailAddressLabel)
@@ -128,7 +137,7 @@ final class LoginViewController: UIViewController {
     setUpLoginConstraints()
   }
 
-  private func ResetUpView() {
+  private func resetUpView() {
     mailAddressLabel.removeFromSuperview()
     mailAddressTextField.removeFromSuperview()
     mailAddressTextFieldUnderlineView.removeFromSuperview()
@@ -160,24 +169,28 @@ final class LoginViewController: UIViewController {
   }
 
   // ボタンのアクション
-  @objc func setButtonTapped() {
-    isSetUpButtonTapped.toggle()
-    if isSetUpButtonTapped {
-      // タイトルをsignupに戻す
-      setUpButton.title = "login"
-      titleLabel.text = "Sign up"
-      loginButton.setTitle("Sign up", for: .normal)
-      ResetUpView()
-      setUpSignUpConstraints()
-    } else {
-      // タイトルをloginに変更
-      setUpButton.title = "sign up"
-      titleLabel.text = "Login"
-      loginButton.setTitle("Login", for: .normal)
-      ResetUpView()
-      setUp()
+    @objc func setButtonTapped() {
+        isSetUpButtonTapped.toggle()
+        if isSetUpButtonTapped {
+            // タイトルをsignupに戻す
+            setUpButton.title = "login"
+            titleLabel.text = "Sign up"
+            loginButton.setTitle("Sign up", for: .normal)
+            loginButton.removeTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
+            loginButton.addTarget(self, action: #selector(signupButtonPressed), for: .touchUpInside)
+            resetUpView()
+            setUpSignUpConstraints()
+        } else {
+            // タイトルをloginに変更
+            setUpButton.title = "sign up"
+            titleLabel.text = "Login"
+            loginButton.setTitle("Login", for: .normal)
+            loginButton.removeTarget(self, action: #selector(signupButtonPressed), for: .touchUpInside)
+            loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
+            resetUpView()
+            setUpContents()
+        }
     }
-  }
 
   private func setUpConstraints() {
     NSLayoutConstraint.activate([
@@ -288,4 +301,66 @@ final class LoginViewController: UIViewController {
       loginButton.heightAnchor.constraint(equalToConstant: 45)
     ])
   }
+
+    private func setupKeyboardToolbar() {
+        // Doneボタンを表示するためのツールバーを作成
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        // Doneボタンを作成
+        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneButtonTapped))
+        doneButton.tintColor = UIColor(named: "mainGray") ?? UIColor.gray
+
+        // ボタンをツールバーに追加
+        toolbar.items = [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), doneButton]
+        
+        // ツールバーをキーボードのアクセサリビューとして設定
+        mailAddressTextField.inputAccessoryView = toolbar
+        passWordTextField.inputAccessoryView = toolbar
+        nameTextField.inputAccessoryView = toolbar
+    }
+
+    @objc func doneButtonTapped() {
+        // キーボードを閉じる処理
+        view.endEditing(true)
+    }
+
+    @objc func loginButtonPressed() {
+        guard let email = mailAddressTextField.text, !email.isEmpty,
+              let password = passWordTextField.text, !password.isEmpty else {
+            showAlert(title: "入力エラー", message: "メールアドレスまたはパスワードが入力されていません")
+            print("メールアドレスまたはパスワードが入力されていません")
+            return
+        }
+        presenter.loginButtonPressed(email: email, password: password)
+    }
+
+    @objc func signupButtonPressed() {
+        guard let email = mailAddressTextField.text, !email.isEmpty,
+              let name = nameTextField.text, !name.isEmpty,
+              let password = passWordTextField.text, !password.isEmpty else {
+            showAlert(title: "入力エラー", message: "メールアドレスまたは名前またはパスワードが入力されていません")
+            print("メールアドレスまたは名前またはパスワードが入力されていません")
+            return
+        }
+        presenter.loginButtonPressed(email: email, password: password)
+    }
+
+    func onLoginSuccess() {
+        print("success")
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let tabbarVC = storyboard.instantiateViewController(withIdentifier: "TabbarViewController") as! TabbarViewController
+        self.navigationController?.present(tabbarVC, animated: true)
+    }
+
+    func onLoginFailure() {
+        print("何かが違うよ")
+    }
+
+    func showAlert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
 }

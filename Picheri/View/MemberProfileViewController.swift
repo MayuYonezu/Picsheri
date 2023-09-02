@@ -127,43 +127,43 @@ class MemberProfileViewController: UIViewController {
     }
 
     private func addContentToWhiteView(_ whiteView: UIView) {
-
+        
         let postImageView = UIImageView()
         postImageView.translatesAutoresizingMaskIntoConstraints = false
         postImageView.backgroundColor = UIColor(named: "subGray")
         // Aspect ratio constraint for 4:3
         let aspectRatioConstraint = postImageView.widthAnchor.constraint(equalTo: postImageView.heightAnchor, multiplier: 4.0/3.0)
         aspectRatioConstraint.priority = .required // Make sure this constraint is satisfied
-
+        
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "title"
         titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
         titleLabel.textColor = UIColor(named: "mainGray") ?? UIColor.lightGray
-
+        
         let commentTextView = UITextView()
         commentTextView.translatesAutoresizingMaskIntoConstraints = false
         commentTextView.text = "comment"
         commentTextView.font = UIFont.systemFont(ofSize: 12)
         commentTextView.isUserInteractionEnabled = false
         commentTextView.textColor = UIColor(named: "mainGray") ?? UIColor.lightGray
-
+        
         whiteView.addSubview(postImageView)
         whiteView.addSubview(titleLabel)
         whiteView.addSubview(commentTextView)
-
+        
         NSLayoutConstraint.activate([
             aspectRatioConstraint, // Activate the aspect ratio constraint
             postImageView.centerXAnchor.constraint(equalTo: whiteView.centerXAnchor),
             postImageView.topAnchor.constraint(equalTo: whiteView.topAnchor, constant: 30),
             postImageView.widthAnchor.constraint(equalTo: whiteView.widthAnchor, multiplier: 0.9) // 90% width of whiteView
         ])
-
+        
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: 10),
             titleLabel.leadingAnchor.constraint(equalTo: whiteView.leadingAnchor, constant: 16)
         ])
-
+        
         NSLayoutConstraint.activate([
             commentTextView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0),
             commentTextView.leadingAnchor.constraint(equalTo: whiteView.leadingAnchor, constant: 10),
