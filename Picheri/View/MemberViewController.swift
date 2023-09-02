@@ -128,6 +128,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
     private func setUpNavigation() {
         // サインアップボタンを作成
         profileButton = UIBarButtonItem(image: UIImage(systemName: "person.crop.circle.fill"), style: .plain, target: self, action: #selector(profileButtonTapped))
+        plusButton.addTarget(self, action: #selector(plusButtonPressed), for: .touchUpInside)
 
         // カスタムフォントを適用したいタイトルフォントを設定
         let font = UIFont.systemFont(ofSize: 12) // フォントサイズを指定
@@ -158,7 +159,15 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
     @objc func profileButtonTapped() {
 
     }
-    
+
+    @objc func plusButtonPressed() {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let postViewController = storyBoard.instantiateViewController(withIdentifier: "PostViewController") as! PostViewController
+        postViewController.modalPresentationStyle = .fullScreen // オプションでフルスクリーン表示
+        self.present(postViewController, animated: true, completion: nil)
+    }
+
+
     private func setUp() {
         view.addSubview(menber1Button)
         view.addSubview(menber1Label)

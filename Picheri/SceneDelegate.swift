@@ -15,14 +15,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        let window = UIWindow(windowScene: windowScene)
-        let loginViewController = LoginViewController()
-        let navigationController = UINavigationController(rootViewController: loginViewController)
-        window.rootViewController = navigationController
-        window.makeKeyAndVisible()
-        window.tintColor = UIColor(named: "mainGray")
-        
-        self.window = window
+//        let window = UIWindow(windowScene: windowScene)
+//        let loginViewController = LoginViewController()
+//        let navigationController = UINavigationController(rootViewController: loginViewController)
+//        window.rootViewController = navigationController
+//        window.makeKeyAndVisible()
+//        window.tintColor = UIColor(named: "mainGray")
+//
+//        self.window = window
     }
 
 
