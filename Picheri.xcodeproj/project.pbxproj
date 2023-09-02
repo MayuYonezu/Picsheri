@@ -19,6 +19,7 @@
 		031346DB2AA22A5D009AAA0A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031346DA2AA22A5D009AAA0A /* ProfileViewController.swift */; };
 		031346DD2AA23402009AAA0A /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031346DC2AA23402009AAA0A /* PostViewController.swift */; };
 		036243BD2AA24ECF00C5D807 /* MemberProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036243BC2AA24ECF00C5D807 /* MemberProfileViewController.swift */; };
+		036243C02AA2702F00C5D807 /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036243BF2AA2702F00C5D807 /* LoginPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		031346DA2AA22A5D009AAA0A /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		031346DC2AA23402009AAA0A /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		036243BC2AA24ECF00C5D807 /* MemberProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberProfileViewController.swift; sourceTree = "<group>"; };
+		036243BF2AA2702F00C5D807 /* LoginPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 		031346BB2AA09C05009AAA0A /* Picheri */ = {
 			isa = PBXGroup;
 			children = (
+				036243BE2AA2700800C5D807 /* Presenter */,
 				031346D12AA09D4F009AAA0A /* Fonts */,
 				031346D02AA09D1D009AAA0A /* View */,
 				031346BC2AA09C05009AAA0A /* AppDelegate.swift */,
@@ -99,6 +102,14 @@
 				031346D32AA09D77009AAA0A /* Shrikhand-Regular.otf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		036243BE2AA2700800C5D807 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				036243BF2AA2702F00C5D807 /* LoginPresenter.swift */,
+			);
+			path = Presenter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -173,6 +184,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				036243C02AA2702F00C5D807 /* LoginPresenter.swift in Sources */,
 				031346DB2AA22A5D009AAA0A /* ProfileViewController.swift in Sources */,
 				031346C12AA09C05009AAA0A /* LoginViewController.swift in Sources */,
 				031346DD2AA23402009AAA0A /* PostViewController.swift in Sources */,
