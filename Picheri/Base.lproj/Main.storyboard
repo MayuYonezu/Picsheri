@@ -142,10 +142,10 @@
             </objects>
             <point key="canvasLocation" x="4975" y="1618"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Tabbar View Controller-->
         <scene sceneID="skk-sj-LTd">
             <objects>
-                <tabBarController id="XJM-du-7I8" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabbarViewController" modalPresentationStyle="fullScreen" id="XJM-du-7I8" customClass="TabbarViewController" customModule="Picheri" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="5VD-OP-jKr"/>
                     <tabBar key="tabBar" autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="8Hq-30-w9C">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>

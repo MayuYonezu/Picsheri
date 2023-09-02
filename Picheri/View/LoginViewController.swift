@@ -348,6 +348,9 @@ final class LoginViewController: UIViewController, LoginView {
 
     func onLoginSuccess() {
         print("success")
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let tabbarVC = storyboard.instantiateViewController(withIdentifier: "TabbarViewController") as! TabbarViewController
+        self.navigationController?.present(tabbarVC, animated: true)
     }
 
     func onLoginFailure() {
