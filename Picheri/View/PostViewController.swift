@@ -183,8 +183,9 @@ class PostViewController: UIViewController {
     }
 
     @objc func backButtonTapped() {
-        self.dismiss(animated: true, completion: nil)
+        self.presentingViewController?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
     }
+
 
     private func setUpConstraints() {
         NSLayoutConstraint.activate([
