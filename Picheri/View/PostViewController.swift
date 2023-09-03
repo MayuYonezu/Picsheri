@@ -4,6 +4,12 @@ class PostViewController: UIViewController {
 
     private var saveButton: UIBarButtonItem!
 
+    var postImage: UIImage? {
+        didSet {
+            postImageView.image = postImage
+        }
+    }
+
     private let postImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -281,33 +287,33 @@ class PostViewController: UIViewController {
 }
 
 class PlaceholderTextView: UITextView {
-
+    
     // プレースホルダーテキストを保持するプロパティ
     var placeholder: String? {
         didSet {
             placeholderLabel.text = placeholder
         }
     }
-
+    
     private let placeholderLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.lightGray
         return label
     }()
-
+    
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
         commonInit()
     }
-
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         commonInit()
     }
-
+    
     private func commonInit() {
         addSubview(placeholderLabel)
-
+        
         // プレースホルダーラベルの制約を設定
         placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -315,18 +321,18 @@ class PlaceholderTextView: UITextView {
             placeholderLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
             placeholderLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5)
         ])
-
+        
         // プレースホルダーラベルのフォントと背景色を設定
         placeholderLabel.font = UIFont.systemFont(ofSize: 12) // フォントサイズを変更
         placeholderLabel.backgroundColor = UIColor.clear // 背景色を透明に設定
-
+        
         // テキストが変更されたときにプレースホルダーラベルを表示・非表示する
         NotificationCenter.default.addObserver(self, selector: #selector(textDidChange), name: UITextView.textDidChangeNotification, object: nil)
-
+        
         // プレースホルダーラベルを初期状態で表示
         showPlaceholderLabel()
     }
-
+    
     @objc private func textDidChange() {
         if let text = self.text, text.isEmpty {
             showPlaceholderLabel()
@@ -334,12 +340,13 @@ class PlaceholderTextView: UITextView {
             hidePlaceholderLabel()
         }
     }
-
+    
     private func showPlaceholderLabel() {
         placeholderLabel.isHidden = false
     }
-
+    
     private func hidePlaceholderLabel() {
         placeholderLabel.isHidden = true
     }
+
 }

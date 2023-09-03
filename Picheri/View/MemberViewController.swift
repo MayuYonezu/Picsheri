@@ -1,6 +1,7 @@
 import UIKit
+import TOCropViewController
 
-final class MemberViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+final class MemberViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate, TOCropViewControllerDelegate {
     
     private var profileButton: UIBarButtonItem!
     private var progress1View: UIProgressView!
@@ -173,10 +174,47 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
     }
 
     @objc func plusButtonPressed() {
+        print("push Image selected")
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.delegate = self
+            imagePickerController.sourceType = .photoLibrary
+            imagePickerController.modalPresentationStyle = .fullScreen
+            present(imagePickerController, animated: true, completion: nil)
+        }
+    }
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        print("Image picker controller finished picking media")
+
+        if let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            print("Image selected: \(selectedImage)")
+            let cropViewController = TOCropViewController(image: selectedImage)
+            cropViewController.delegate = self
+            cropViewController.doneButtonColor = UIColor(named: "subYellow")
+            cropViewController.cancelButtonColor = UIColor(named: "mainYellow")
+            cropViewController.customAspectRatio = CGSize(width: 4, height: 3)
+            cropViewController.aspectRatioLockEnabled = true
+            cropViewController.resetAspectRatioEnabled = false
+
+            picker.present(cropViewController, animated: true, completion: nil)
+        } else {
+            print("No image selected")
+            dismiss(animated: true, completion: nil)
+        }
+    }
+
+    func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
         let postViewController = PostViewController()
-        let navigationController = UINavigationController(rootViewController: postViewController)
-        navigationController.modalPresentationStyle = .fullScreen
-        self.present(navigationController, animated: true, completion: nil)
+        postViewController.postImage = image
+        
+        let postNavigationController = UINavigationController(rootViewController: postViewController)
+        postNavigationController.modalPresentationStyle = .fullScreen
+        cropViewController.present(postNavigationController, animated: true, completion: nil)
+    }
+
+    func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
+        cropViewController.dismiss(animated: true, completion: nil)
     }
 
     private func setUp() {
