@@ -20,6 +20,7 @@
 		031346DD2AA23402009AAA0A /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031346DC2AA23402009AAA0A /* PostViewController.swift */; };
 		036243BD2AA24ECF00C5D807 /* MemberProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036243BC2AA24ECF00C5D807 /* MemberProfileViewController.swift */; };
 		036243C02AA2702F00C5D807 /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036243BF2AA2702F00C5D807 /* LoginPresenter.swift */; };
+		036243C72AA4689D00C5D807 /* TOCropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = 036243C62AA4689D00C5D807 /* TOCropViewController */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				036243C72AA4689D00C5D807 /* TOCropViewController in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,6 +130,9 @@
 			dependencies = (
 			);
 			name = Picheri;
+			packageProductDependencies = (
+				036243C62AA4689D00C5D807 /* TOCropViewController */,
+			);
 			productName = Picheri;
 			productReference = 031346B92AA09C05009AAA0A /* Picheri.app */;
 			productType = "com.apple.product-type.application";
@@ -156,6 +161,9 @@
 				Base,
 			);
 			mainGroup = 031346B02AA09C05009AAA0A;
+			packageReferences = (
+				036243C52AA4689D00C5D807 /* XCRemoteSwiftPackageReference "TOCropViewController" */,
+			);
 			productRefGroup = 031346BA2AA09C05009AAA0A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -410,6 +418,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		036243C52AA4689D00C5D807 /* XCRemoteSwiftPackageReference "TOCropViewController" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/TimOliver/TOCropViewController.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		036243C62AA4689D00C5D807 /* TOCropViewController */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 036243C52AA4689D00C5D807 /* XCRemoteSwiftPackageReference "TOCropViewController" */;
+			productName = TOCropViewController;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 031346B12AA09C05009AAA0A /* Project object */;
 }

@@ -6,6 +6,8 @@
 	<array>
 		<string>Shrikhand-Regular.otf</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>アルバム内で使用する画像をフォトライブラリから呼び出します</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
