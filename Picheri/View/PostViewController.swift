@@ -6,6 +6,7 @@ class PostViewController: UIViewController {
 
     var memberList = ["A","B","C","D","E"]
     var selectedMember: String?
+    var selectedMemberIndex: Int?
 
     var postImage: UIImage? {
         didSet {
@@ -58,18 +59,16 @@ class PostViewController: UIViewController {
 
     private let dateTextField: UITextField = {
         let textField = UITextField()
-        textField.font = UIFont.systemFont(ofSize: 14)
+        textField.font = UIFont.systemFont(ofSize: 10)
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        let attributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 10) // 任意のフォントサイズを指定
-        ]
-        textField.isUserInteractionEnabled = false
-        let attributedPlaceholder = NSAttributedString(string: "日付", attributes: attributes)
-        textField.attributedPlaceholder = attributedPlaceholder
+        textField.tintColor = .clear
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        let currentDate = dateFormatter.string(from: Date())
+        textField.text = currentDate
         return textField
     }()
-    
+
     private let dateTextFieldUnderlineView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(named: "subGray") ?? UIColor.gray
@@ -87,7 +86,8 @@ class PostViewController: UIViewController {
 
     private let placeTextField: UITextField = {
         let textField = UITextField()
-        textField.font = UIFont.systemFont(ofSize: 14)
+        textField.tintColor = .clear
+        textField.font = UIFont.systemFont(ofSize: 10)
         textField.translatesAutoresizingMaskIntoConstraints = false
         let attributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 10) // 任意のフォントサイズを指定
@@ -192,6 +192,8 @@ class PostViewController: UIViewController {
 
     private func setUpConstraints() {
         iconTextField.delegate = self
+        dateTextField.delegate = self
+        placeTextField.delegate = self
         let pickerView = UIPickerView()
         pickerView.delegate = self
         iconTextField.inputView = pickerView
@@ -374,14 +376,17 @@ class PlaceholderTextView: UITextView {
 }
 
 extension PostViewController: UITextFieldDelegate {
+
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         // テキストフィールドがタップされた際にピッカービューを表示する処理
         addDoneButtonAndAddButtonToPickerView()
+        if textField == dateTextField {
+            return false
+        }
         return true
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        // ペーストを無効にする
         return false
     }
 
