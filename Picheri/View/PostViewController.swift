@@ -197,6 +197,7 @@ class PostViewController: UIViewController {
         iconTextField.delegate = self
         dateTextField.delegate = self
         placeTextField.delegate = self
+        titleTextField.delegate = self
         setupKeyboardToolbar()
         let pickerView = UIPickerView()
         pickerView.delegate = self
@@ -468,6 +469,8 @@ extension PostViewController: UITextFieldDelegate {
         
         // ツールバーをキーボードのアクセサリビューとして設定
         placeTextField.inputAccessoryView = toolbar
+        titleTextField.inputAccessoryView = toolbar
+        commentTextView.inputAccessoryView = toolbar
     }
 
     func searchLocation(_ searchText: String) {
