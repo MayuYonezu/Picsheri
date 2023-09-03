@@ -183,7 +183,7 @@ class PostViewController: UIViewController {
     }
 
     @objc func backButtonTapped() {
-        self.presentingViewController?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+        showAlert(title: "保存されていません", message: "このまま戻ると編集内容は破棄されます")
     }
 
 
@@ -285,6 +285,20 @@ class PostViewController: UIViewController {
             postButton.heightAnchor.constraint(equalToConstant: 45)
         ])
     }
+
+    func showAlert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
+            self.presentingViewController?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+        }
+        alertController.addAction(okAction)
+
+        let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
 class PlaceholderTextView: UITextView {
@@ -349,5 +363,4 @@ class PlaceholderTextView: UITextView {
     private func hidePlaceholderLabel() {
         placeholderLabel.isHidden = true
     }
-
 }
