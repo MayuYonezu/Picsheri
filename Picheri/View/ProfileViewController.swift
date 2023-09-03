@@ -133,6 +133,8 @@ class ProfileViewController: UIViewController {
     }
     
     private func setUpConstraints() {
+        editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
+        logoutButton.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             titleLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30),
@@ -187,5 +189,33 @@ class ProfileViewController: UIViewController {
           logoutButton.widthAnchor.constraint(equalToConstant: 320),
           logoutButton.heightAnchor.constraint(equalToConstant: 45)
         ])
+    }
+
+    @objc private func editButtonTapped() {
+        let alertController = UIAlertController(title: "保存完了", message: "保存が完了しました", preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
+            self.dismiss(animated: true, completion: nil) // ここで画面遷移を行う
+        }
+        alertController.addAction(okAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+
+    @objc private func logoutButtonTapped() {
+        let alertController = UIAlertController(title: "", message: "本当にログアウトしますか？", preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "はい", style: .default) { (_) in
+            let transition = CATransition()
+            transition.duration = 1
+            transition.type = CATransitionType.fade
+            transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
+            self.view.window?.layer.add(transition, forKey: kCATransition)
+            self.view.window?.rootViewController?.dismiss(animated: false, completion: nil)
+
+        }
+        alertController.addAction(okAction)
+        
+        present(alertController, animated: true, completion: nil)
     }
 }
