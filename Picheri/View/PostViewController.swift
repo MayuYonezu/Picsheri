@@ -1,8 +1,16 @@
 import UIKit
+import CoreLocation
 
 class PostViewController: UIViewController {
 
     private var saveButton: UIBarButtonItem!
+
+    var memberList = ["A","B","C","D","E"]
+    var selectedMember: String?
+
+    let geocoder = CLGeocoder()
+    var place_longitude: CLLocationDegrees = 0.0
+    var place_latitude: CLLocationDegrees = 0.0
 
     var postImage: UIImage? {
         didSet {
@@ -28,11 +36,11 @@ class PostViewController: UIViewController {
 
     private let iconTextField: UITextField = {
         let textField = UITextField()
+        textField.tintColor = .clear
         textField.font = UIFont.systemFont(ofSize: 14)
         textField.translatesAutoresizingMaskIntoConstraints = false
         let attributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 10) // 任意のフォントサイズを指定
-        ]
+            .font: UIFont.systemFont(ofSize: 10)]
         let attributedPlaceholder = NSAttributedString(string: "推しの名前", attributes: attributes)
         textField.attributedPlaceholder = attributedPlaceholder
         return textField
@@ -45,7 +53,7 @@ class PostViewController: UIViewController {
         return view
     }()
 
-    private let calendarImageView: UIImageView = {
+    private let dateImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
@@ -53,27 +61,26 @@ class PostViewController: UIViewController {
         return imageView
     }()
 
-    private let calendarTextField: UITextField = {
+    private let dateTextField: UITextField = {
         let textField = UITextField()
-        textField.font = UIFont.systemFont(ofSize: 14)
+        textField.font = UIFont.systemFont(ofSize: 10)
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        let attributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 10) // 任意のフォントサイズを指定
-        ]
-        let attributedPlaceholder = NSAttributedString(string: "日付", attributes: attributes)
-        textField.attributedPlaceholder = attributedPlaceholder
+        textField.tintColor = .clear
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        let currentDate = dateFormatter.string(from: Date())
+        textField.text = currentDate
         return textField
     }()
-    
-    private let calendarTextFieldUnderlineView: UIView = {
+
+    private let dateTextFieldUnderlineView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(named: "subGray") ?? UIColor.gray
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
-    private let dateImageView: UIImageView = {
+    private let placeImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
@@ -81,20 +88,19 @@ class PostViewController: UIViewController {
         return imageView
     }()
 
-    private let dateTextField: UITextField = {
+    private let placeTextField: UITextField = {
         let textField = UITextField()
-        textField.font = UIFont.systemFont(ofSize: 14)
+        textField.font = UIFont.systemFont(ofSize: 10)
         textField.translatesAutoresizingMaskIntoConstraints = false
         let attributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 10) // 任意のフォントサイズを指定
+            .font: UIFont.systemFont(ofSize: 10)
         ]
         let attributedPlaceholder = NSAttributedString(string: "場所", attributes: attributes)
         textField.attributedPlaceholder = attributedPlaceholder
-        textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
     
-    private let dateTextFieldUnderlineView: UIView = {
+    private let placeTextFieldUnderlineView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(named: "subGray") ?? UIColor.gray
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -153,9 +159,9 @@ class PostViewController: UIViewController {
         view.addSubview(iconImageView)
         view.addSubview(iconTextField)
         view.addSubview(iconTextFieldUnderlineView)
-        view.addSubview(calendarImageView)
-        view.addSubview(calendarTextField)
-        view.addSubview(calendarTextFieldUnderlineView)
+        view.addSubview(placeImageView)
+        view.addSubview(placeTextField)
+        view.addSubview(placeTextFieldUnderlineView)
         view.addSubview(dateImageView)
         view.addSubview(dateTextField)
         view.addSubview(dateTextFieldUnderlineView)
@@ -183,11 +189,24 @@ class PostViewController: UIViewController {
     }
 
     @objc func backButtonTapped() {
+        showAlert(title: "保存されていません", message: "このまま戻ると編集内容は破棄されます")
+    }
+
+    @objc func postButtonTapped() {
         self.presentingViewController?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
     }
 
-
     private func setUpConstraints() {
+        iconTextField.delegate = self
+        dateTextField.delegate = self
+        placeTextField.delegate = self
+        titleTextField.delegate = self
+        setupKeyboardToolbar()
+        let pickerView = UIPickerView()
+        pickerView.delegate = self
+        iconTextField.inputView = pickerView
+        postButton.addTarget(self, action: #selector(postButtonTapped), for: .touchUpInside)
+
         NSLayoutConstraint.activate([
             postImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
             postImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -217,35 +236,14 @@ class PostViewController: UIViewController {
         ])
 
         NSLayoutConstraint.activate([
-            calendarImageView.topAnchor.constraint(equalTo: iconTextFieldUnderlineView.topAnchor, constant: 5),
-            calendarImageView.leadingAnchor.constraint(equalTo: postImageView.trailingAnchor, constant: 10),
-            calendarImageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.05),
-            calendarImageView.heightAnchor.constraint(equalTo: calendarImageView.widthAnchor, multiplier: 1)
-        ])
-
-        NSLayoutConstraint.activate([
-            calendarTextField.topAnchor.constraint(equalTo: iconTextFieldUnderlineView.bottomAnchor, constant: 6),
-            calendarTextField.leadingAnchor.constraint(equalTo: calendarImageView.trailingAnchor, constant: 7),
-            calendarTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            calendarTextField.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.05)
-        ])
-
-        NSLayoutConstraint.activate([
-            calendarTextFieldUnderlineView.topAnchor.constraint(equalTo: calendarImageView.bottomAnchor, constant: 3),
-            calendarTextFieldUnderlineView.leadingAnchor.constraint(equalTo: postImageView.trailingAnchor, constant: 10),
-            calendarTextFieldUnderlineView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            calendarTextFieldUnderlineView.heightAnchor.constraint(equalToConstant: 1)
-        ])
-
-        NSLayoutConstraint.activate([
-            dateImageView.topAnchor.constraint(equalTo: calendarTextFieldUnderlineView.topAnchor, constant: 5),
+            dateImageView.topAnchor.constraint(equalTo: iconTextFieldUnderlineView.topAnchor, constant: 5),
             dateImageView.leadingAnchor.constraint(equalTo: postImageView.trailingAnchor, constant: 10),
             dateImageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.05),
             dateImageView.heightAnchor.constraint(equalTo: dateImageView.widthAnchor, multiplier: 1)
         ])
 
         NSLayoutConstraint.activate([
-            dateTextField.topAnchor.constraint(equalTo: calendarTextFieldUnderlineView.bottomAnchor, constant: 6),
+            dateTextField.topAnchor.constraint(equalTo: iconTextFieldUnderlineView.bottomAnchor, constant: 6),
             dateTextField.leadingAnchor.constraint(equalTo: dateImageView.trailingAnchor, constant: 7),
             dateTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             dateTextField.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.05)
@@ -256,6 +254,27 @@ class PostViewController: UIViewController {
             dateTextFieldUnderlineView.leadingAnchor.constraint(equalTo: postImageView.trailingAnchor, constant: 10),
             dateTextFieldUnderlineView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             dateTextFieldUnderlineView.heightAnchor.constraint(equalToConstant: 1)
+        ])
+
+        NSLayoutConstraint.activate([
+            placeImageView.topAnchor.constraint(equalTo: dateTextFieldUnderlineView.topAnchor, constant: 5),
+            placeImageView.leadingAnchor.constraint(equalTo: postImageView.trailingAnchor, constant: 10),
+            placeImageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.05),
+            placeImageView.heightAnchor.constraint(equalTo: dateImageView.widthAnchor, multiplier: 1)
+        ])
+
+        NSLayoutConstraint.activate([
+            placeTextField.topAnchor.constraint(equalTo: dateTextFieldUnderlineView.bottomAnchor, constant: 6),
+            placeTextField.leadingAnchor.constraint(equalTo: placeImageView.trailingAnchor, constant: 7),
+            placeTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            placeTextField.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.05)
+        ])
+
+        NSLayoutConstraint.activate([
+            placeTextFieldUnderlineView.topAnchor.constraint(equalTo: placeImageView.bottomAnchor, constant: 3),
+            placeTextFieldUnderlineView.leadingAnchor.constraint(equalTo: postImageView.trailingAnchor, constant: 10),
+            placeTextFieldUnderlineView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            placeTextFieldUnderlineView.heightAnchor.constraint(equalToConstant: 1)
         ])
 
         NSLayoutConstraint.activate([
@@ -284,6 +303,20 @@ class PostViewController: UIViewController {
             postButton.widthAnchor.constraint(equalToConstant: 320),
             postButton.heightAnchor.constraint(equalToConstant: 45)
         ])
+    }
+
+    func showAlert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
+            self.presentingViewController?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+        }
+        alertController.addAction(okAction)
+
+        let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+
+        present(alertController, animated: true, completion: nil)
     }
 }
 
@@ -349,5 +382,138 @@ class PlaceholderTextView: UITextView {
     private func hidePlaceholderLabel() {
         placeholderLabel.isHidden = true
     }
+}
 
+extension PostViewController: UITextFieldDelegate {
+
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        // テキストフィールドがタップされた際にピッカービューを表示する処理
+        addDoneButtonAndAddButtonToPickerView()
+        if textField == dateTextField {
+            return false
+        }
+        if textField == placeTextField {
+            textField.resignFirstResponder()
+            if let searchText = textField.text {
+                searchLocation(searchText)
+            }
+        }
+        return true
+    }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == placeTextField {
+            if let currentText = textField.text as NSString? {
+                let updatedText = currentText.replacingCharacters(in: range, with: string)
+                searchLocation(updatedText)
+            }
+            return true
+        } else {
+            return false
+        }
+    }
+
+    private func addDoneButtonAndAddButtonToPickerView() {
+         let toolBar = UIToolbar()
+         toolBar.sizeToFit()
+         
+         let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneButtonTapped))
+         let addButton = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addButtonTapped))
+         let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+
+         doneButton.tintColor = UIColor(named: "mainGray")
+         addButton.tintColor = UIColor(named: "mainGray")
+         
+         toolBar.setItems([addButton, spaceButton, doneButton], animated: false)
+         
+         iconTextField.inputAccessoryView = toolBar
+     }
+
+    @objc private func doneButtonTapped() {
+        view.endEditing(true) // キーボードやピッカービューを閉じる
+    }
+
+    @objc private func addButtonTapped() {
+        let alertController = UIAlertController(title: "新しい選択肢を追加", message: "新しい選択肢を入力してください", preferredStyle: .alert)
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = "選択肢を入力"
+        }
+        
+        let addAction = UIAlertAction(title: "追加", style: .default) { (_) in
+            if let newOption = alertController.textFields?.first?.text, !newOption.isEmpty {
+                self.memberList.append(newOption) // リストに選択肢を追加
+                self.iconTextField.text = newOption // テキストフィールドに選択肢を表示
+            } else {
+                self.iconTextField.text = self.memberList.first // リストの1番目の選択肢を表示
+            }
+            self.iconTextField.resignFirstResponder() // ピッカービューを閉じる
+            self.iconTextField.reloadInputViews() // ピッカービューの再読み込み
+        }
+        
+        let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
+        
+        alertController.addAction(addAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+
+    private func setupKeyboardToolbar() {
+        // Doneボタンを表示するためのツールバーを作成
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        // Doneボタンを作成
+        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneButtonTapped))
+        doneButton.tintColor = UIColor(named: "mainGray") ?? UIColor.gray
+
+        // ボタンをツールバーに追加
+        toolbar.items = [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), doneButton]
+        
+        // ツールバーをキーボードのアクセサリビューとして設定
+        placeTextField.inputAccessoryView = toolbar
+        titleTextField.inputAccessoryView = toolbar
+        commentTextView.inputAccessoryView = toolbar
+    }
+
+    func searchLocation(_ searchText: String) {
+        geocoder.geocodeAddressString(searchText) { (placemarks, error) in
+            if let error = error {
+                print("Geocoding error: \(error.localizedDescription)")
+                return
+            }
+            
+            if let placemark = placemarks?.first,
+               let location = placemark.location {
+                print("Found location: \(self.place_latitude), \(self.place_longitude)")
+                // ここで取得した座標を変数に代入
+                self.place_latitude = location.coordinate.latitude
+                self.place_longitude = location.coordinate.longitude
+                print("確定: \(self.place_latitude), \(self.place_longitude)")
+            } else {
+                print("No matching location found.")
+            }
+        }
+    }
+}
+
+extension PostViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return memberList.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return memberList[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        // ピッカービューで選択された内容を処理する
+        selectedMember = memberList[row]
+        iconTextField.text = selectedMember
+    }
 }
