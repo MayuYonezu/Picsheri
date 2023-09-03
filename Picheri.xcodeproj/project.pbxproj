@@ -25,6 +25,7 @@
 		036243CE2AA4F4E200C5D807 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 036243CD2AA4F4E200C5D807 /* FirebaseDatabase */; };
 		036243D02AA4F4E200C5D807 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 036243CF2AA4F4E200C5D807 /* FirebaseFirestore */; };
 		036243D22AA4F4E200C5D807 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 036243D12AA4F4E200C5D807 /* FirebaseStorage */; };
+		036243D42AA5059F00C5D807 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036243D32AA5059F00C5D807 /* Model.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		031346DC2AA23402009AAA0A /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		036243BC2AA24ECF00C5D807 /* MemberProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberProfileViewController.swift; sourceTree = "<group>"; };
 		036243C82AA4F32200C5D807 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		036243D32AA5059F00C5D807 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,7 @@
 				031346D02AA09D1D009AAA0A /* View */,
 				031346BC2AA09C05009AAA0A /* AppDelegate.swift */,
 				031346BE2AA09C05009AAA0A /* SceneDelegate.swift */,
+				036243D32AA5059F00C5D807 /* Model.swift */,
 				031346C22AA09C05009AAA0A /* Main.storyboard */,
 				031346C52AA09C06009AAA0A /* Assets.xcassets */,
 				031346C72AA09C06009AAA0A /* LaunchScreen.storyboard */,
@@ -198,6 +201,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				036243D42AA5059F00C5D807 /* Model.swift in Sources */,
 				031346DB2AA22A5D009AAA0A /* ProfileViewController.swift in Sources */,
 				031346C12AA09C05009AAA0A /* LoginViewController.swift in Sources */,
 				031346DD2AA23402009AAA0A /* PostViewController.swift in Sources */,
