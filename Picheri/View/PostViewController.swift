@@ -90,11 +90,10 @@ class PostViewController: UIViewController {
 
     private let placeTextField: UITextField = {
         let textField = UITextField()
-        textField.tintColor = .clear
         textField.font = UIFont.systemFont(ofSize: 10)
         textField.translatesAutoresizingMaskIntoConstraints = false
         let attributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 10) // 任意のフォントサイズを指定
+            .font: UIFont.systemFont(ofSize: 10)
         ]
         let attributedPlaceholder = NSAttributedString(string: "場所", attributes: attributes)
         textField.attributedPlaceholder = attributedPlaceholder
