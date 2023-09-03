@@ -455,9 +455,5 @@ extension PostViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         // ピッカービューで選択された内容を処理する
         selectedMember = memberList[row]
         iconTextField.text = selectedMember
-        
-        // 選択されたら他のテキストフィールドの選択をクリアする
-        dateTextField.text = nil
-        placeTextField.text = nil
     }
 }
