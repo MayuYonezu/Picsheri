@@ -192,6 +192,10 @@ class PostViewController: UIViewController {
         showAlert(title: "保存されていません", message: "このまま戻ると編集内容は破棄されます")
     }
 
+    @objc func postButtonTapped() {
+        self.presentingViewController?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+    }
+
     private func setUpConstraints() {
         iconTextField.delegate = self
         dateTextField.delegate = self
@@ -201,6 +205,7 @@ class PostViewController: UIViewController {
         let pickerView = UIPickerView()
         pickerView.delegate = self
         iconTextField.inputView = pickerView
+        postButton.addTarget(self, action: #selector(postButtonTapped), for: .touchUpInside)
 
         NSLayoutConstraint.activate([
             postImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
