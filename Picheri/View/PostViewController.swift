@@ -1,4 +1,5 @@
 import UIKit
+import CoreLocation
 
 class PostViewController: UIViewController {
 
@@ -6,7 +7,10 @@ class PostViewController: UIViewController {
 
     var memberList = ["A","B","C","D","E"]
     var selectedMember: String?
-    var selectedMemberIndex: Int?
+
+    let geocoder = CLGeocoder()
+    var place_longitude: CLLocationDegrees = 0.0
+    var place_latitude: CLLocationDegrees = 0.0
 
     var postImage: UIImage? {
         didSet {
@@ -383,17 +387,26 @@ extension PostViewController: UITextFieldDelegate {
         if textField == dateTextField {
             return false
         }
+        if textField == placeTextField {
+            textField.resignFirstResponder()
+            if let searchText = textField.text {
+                searchLocation(searchText)
+            }
+        }
         return true
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if textField == placeTextField {
+            if let currentText = textField.text as NSString? {
+                let updatedText = currentText.replacingCharacters(in: range, with: string)
+                searchLocation(updatedText)
+            }
             return true
         } else {
             return false
         }
     }
-
 
     private func addDoneButtonAndAddButtonToPickerView() {
          let toolBar = UIToolbar()
@@ -457,6 +470,25 @@ extension PostViewController: UITextFieldDelegate {
         placeTextField.inputAccessoryView = toolbar
     }
 
+    func searchLocation(_ searchText: String) {
+        geocoder.geocodeAddressString(searchText) { (placemarks, error) in
+            if let error = error {
+                print("Geocoding error: \(error.localizedDescription)")
+                return
+            }
+            
+            if let placemark = placemarks?.first,
+               let location = placemark.location {
+                print("Found location: \(self.place_latitude), \(self.place_longitude)")
+                // ここで取得した座標を変数に代入
+                self.place_latitude = location.coordinate.latitude
+                self.place_longitude = location.coordinate.longitude
+                print("確定: \(self.place_latitude), \(self.place_longitude)")
+            } else {
+                print("No matching location found.")
+            }
+        }
+    }
 }
 
 extension PostViewController: UIPickerViewDelegate, UIPickerViewDataSource {
