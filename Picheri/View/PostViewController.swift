@@ -408,6 +408,8 @@ extension PostViewController: UITextFieldDelegate {
                 searchLocation(updatedText)
             }
             return true
+        } else if textField == titleTextField {
+            return true
         } else {
             return false
         }
