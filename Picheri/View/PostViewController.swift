@@ -94,7 +94,6 @@ class PostViewController: UIViewController {
         ]
         let attributedPlaceholder = NSAttributedString(string: "場所", attributes: attributes)
         textField.attributedPlaceholder = attributedPlaceholder
-        textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
     
@@ -194,6 +193,7 @@ class PostViewController: UIViewController {
         iconTextField.delegate = self
         dateTextField.delegate = self
         placeTextField.delegate = self
+        setupKeyboardToolbar()
         let pickerView = UIPickerView()
         pickerView.delegate = self
         iconTextField.inputView = pickerView
@@ -387,8 +387,13 @@ extension PostViewController: UITextFieldDelegate {
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        return false
+        if textField == placeTextField {
+            return true
+        } else {
+            return false
+        }
     }
+
 
     private func addDoneButtonAndAddButtonToPickerView() {
          let toolBar = UIToolbar()
@@ -434,6 +439,22 @@ extension PostViewController: UITextFieldDelegate {
         alertController.addAction(cancelAction)
         
         present(alertController, animated: true, completion: nil)
+    }
+
+    private func setupKeyboardToolbar() {
+        // Doneボタンを表示するためのツールバーを作成
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        // Doneボタンを作成
+        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneButtonTapped))
+        doneButton.tintColor = UIColor(named: "mainGray") ?? UIColor.gray
+
+        // ボタンをツールバーに追加
+        toolbar.items = [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), doneButton]
+        
+        // ツールバーをキーボードのアクセサリビューとして設定
+        placeTextField.inputAccessoryView = toolbar
     }
 
 }
