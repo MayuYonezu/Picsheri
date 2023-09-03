@@ -1,6 +1,7 @@
 import UIKit
+import TOCropViewController
 
-class MemberProfileViewController: UIViewController {
+class MemberProfileViewController: UIViewController, UIImagePickerControllerDelegate, TOCropViewControllerDelegate, UINavigationControllerDelegate {
 
     var viewWidth: CGFloat = 0.0
     private var progressView: UIProgressView!
@@ -50,7 +51,8 @@ class MemberProfileViewController: UIViewController {
     private func setUpContents() {
         view.addSubview(profileButton)
         view.addSubview(nameButton)
-
+        profileButton.addTarget(self, action: #selector(profileButtonTapped), for: .touchUpInside)
+        nameButton.addTarget(self, action: #selector(nameButtonTapped), for: .touchUpInside)
         // progress1Viewをインスタンス化
         progressView = UIProgressView()
         progressView.translatesAutoresizingMaskIntoConstraints = false
@@ -127,7 +129,6 @@ class MemberProfileViewController: UIViewController {
     }
 
     private func addContentToWhiteView(_ whiteView: UIView) {
-        
         let postImageView = UIImageView()
         postImageView.translatesAutoresizingMaskIntoConstraints = false
         postImageView.backgroundColor = UIColor(named: "subGray")
@@ -172,4 +173,83 @@ class MemberProfileViewController: UIViewController {
         ])
     }
 
+    @objc private func nameButtonTapped() {
+        let alertController = UIAlertController(title: "名前を変更する", message: "保存するとすぐに変更されます", preferredStyle: .alert)
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = "名前"
+        }
+        
+        let okAction = UIAlertAction(title: "保存", style: .default) { (_) in
+            if let newName = alertController.textFields?.first?.text, !newName.isEmpty {
+                self.nameButton.setTitle(newName, for: .normal)
+            }
+        }
+        alertController.addAction(okAction)
+
+        let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+
+        present(alertController, animated: true, completion: nil)
+    }
+
+
+    @objc func profileButtonTapped() {
+        let alertController = UIAlertController(title: "プロフィール画像変更", message: "プロフィール画像を変更しますか？", preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
+            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+                let imagePickerController = UIImagePickerController()
+                imagePickerController.delegate = self
+                imagePickerController.sourceType = .photoLibrary
+                imagePickerController.modalPresentationStyle = .fullScreen
+                self.present(imagePickerController, animated: true, completion: nil)
+            }
+        }
+        alertController.addAction(okAction)
+
+        let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+
+        present(alertController, animated: true, completion: nil)
+    }
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        print("Image picker controller finished picking media")
+
+        if let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            print("Image selected: \(selectedImage)")
+            let cropViewController = TOCropViewController(image: selectedImage)
+            cropViewController.delegate = self
+            cropViewController.doneButtonColor = UIColor(named: "subYellow")
+            cropViewController.cancelButtonColor = UIColor(named: "mainYellow")
+            cropViewController.customAspectRatio = CGSize(width: 1, height: 1)
+            cropViewController.aspectRatioLockEnabled = true
+            cropViewController.resetAspectRatioEnabled = false
+
+            picker.present(cropViewController, animated: true, completion: nil)
+        } else {
+            print("No image selected")
+            dismiss(animated: true, completion: nil)
+        }
+    }
+
+    func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
+        self.profileButton.setImage(image, for: .normal)
+        cropViewController.dismiss(animated: true) {
+            // UIImagePickerController を取得
+            if let imagePickerController = self.presentedViewController as? UIImagePickerController {
+                imagePickerController.dismiss(animated: true) {
+                    // MemberProfileViewController に戻る
+                    if let memberProfileViewController = self.presentingViewController as? MemberProfileViewController {
+                        memberProfileViewController.profileButton.setImage(image, for: .normal)
+                    }
+                }
+            }
+        }
+    }
+
+    func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
+        cropViewController.dismiss(animated: true, completion: nil)
+    }
 }
