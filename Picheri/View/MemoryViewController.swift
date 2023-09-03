@@ -7,10 +7,10 @@ class MemoryViewController: UIViewController {
 
     private let plusButton: UIButton = {
         let button = UIButton()
-        let imageSize = CGSize(width: 50, height: 50) // 画像のサイズを設定
+        let imageSize = CGSize(width: 50, height: 50)
         let buttonImage = UIImage(named: "plus")
         button.setImage(buttonImage, for: .normal)
-        button.tintColor = UIColor(named: "mainGray") // ボタンの色を設定
+        button.tintColor = UIColor(named: "mainGray")
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.shadowColor = UIColor(named: "mainGray")?.cgColor
         button.layer.shadowOpacity = 0.2
@@ -96,10 +96,13 @@ class MemoryViewController: UIViewController {
         navigationController?.navigationBar.titleTextAttributes = titleAttributes
     }
 
-    // ボタンのアクション
     @objc func profileButtonTapped() {
-        
+        let profileViewController = ProfileViewController()
+        let navigationController = UINavigationController(rootViewController: profileViewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        self.present(navigationController, animated: true, completion: nil)
     }
+
 
     private func addContentToWhiteView(_ whiteView: UIView) {
         let profileImageView = UIImageView()

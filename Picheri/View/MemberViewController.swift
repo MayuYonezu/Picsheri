@@ -10,7 +10,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
     private let reuseIdentifier = "Cell"
     let images: [UIImage] = [UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!] // 表示する画像
 
-    private let menber1Button: UIButton = {
+    private let member1Button: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "profile"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -25,7 +25,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         return button
     }()
 
-    private let menber1Label: UILabel = {
+    private let member1Label: UILabel = {
         let label = UILabel()
         label.text = "name"
         label.font = UIFont.systemFont(ofSize: 14)
@@ -34,7 +34,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         return label
     }()
     
-    private let menber2Button: UIButton = {
+    private let member2Button: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "profile"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -50,7 +50,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         return button
     }()
 
-    private let menber2Label: UILabel = {
+    private let member2Label: UILabel = {
         let label = UILabel()
         label.text = "name"
         label.font = UIFont.systemFont(ofSize: 14)
@@ -59,7 +59,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         return label
     }()
 
-    private let menber3Button: UIButton = {
+    private let member3Button: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "profile"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -75,7 +75,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         return button
     }()
 
-    private let menber3Label: UILabel = {
+    private let member3Label: UILabel = {
         let label = UILabel()
         label.text = "name"
         label.font = UIFont.systemFont(ofSize: 14)
@@ -126,6 +126,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
     }
 
     private func setUpNavigation() {
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         // サインアップボタンを作成
         profileButton = UIBarButtonItem(image: UIImage(systemName: "person.crop.circle.fill"), style: .plain, target: self, action: #selector(profileButtonTapped))
         plusButton.addTarget(self, action: #selector(plusButtonPressed), for: .touchUpInside)
@@ -153,28 +154,38 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
             .font: UIFont(name: "Shrikhand-Regular", size: 24) ?? .systemFont(ofSize: 24) // 任意のフォントとサイズに変更
         ]
         navigationController?.navigationBar.titleTextAttributes = titleAttributes
-    }
-    
-    // ボタンのアクション
-    @objc func profileButtonTapped() {
 
+        member1Button.addTarget(self, action: #selector(memberButtonPressed), for: .touchUpInside)
+        member2Button.addTarget(self, action: #selector(memberButtonPressed), for: .touchUpInside)
+        member3Button.addTarget(self, action: #selector(memberButtonPressed), for: .touchUpInside)
+    }
+
+    @objc func memberButtonPressed() {
+        let memberProfileViewController = MemberProfileViewController()
+        navigationController?.pushViewController(memberProfileViewController, animated: true)
+    }
+
+    @objc func profileButtonTapped() {
+        let profileViewController = ProfileViewController()
+        let navigationController = UINavigationController(rootViewController: profileViewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        self.present(navigationController, animated: true, completion: nil)
     }
 
     @objc func plusButtonPressed() {
-        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let postViewController = storyBoard.instantiateViewController(withIdentifier: "PostViewController") as! PostViewController
-        postViewController.modalPresentationStyle = .fullScreen // オプションでフルスクリーン表示
-        self.present(postViewController, animated: true, completion: nil)
+        let postViewController = PostViewController()
+        let navigationController = UINavigationController(rootViewController: postViewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        self.present(navigationController, animated: true, completion: nil)
     }
 
-
     private func setUp() {
-        view.addSubview(menber1Button)
-        view.addSubview(menber1Label)
-        view.addSubview(menber2Button)
-        view.addSubview(menber2Label)
-        view.addSubview(menber3Button)
-        view.addSubview(menber3Label)
+        view.addSubview(member1Button)
+        view.addSubview(member1Label)
+        view.addSubview(member2Button)
+        view.addSubview(member2Label)
+        view.addSubview(member3Button)
+        view.addSubview(member3Label)
         view.addSubview(memberCollectionView)
         
         // progress1Viewをインスタンス化
@@ -197,57 +208,57 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         memberCollectionView.setContentOffset(CGPoint(x: xOffset, y: 0), animated: false)
 
         NSLayoutConstraint.activate([
-            menber1Button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
-            menber1Button.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
-            menber1Button.widthAnchor.constraint(equalToConstant: 100),
-            menber1Button.heightAnchor.constraint(equalToConstant: 100)
+            member1Button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+            member1Button.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
+            member1Button.widthAnchor.constraint(equalToConstant: 100),
+            member1Button.heightAnchor.constraint(equalToConstant: 100)
         ])
 
         NSLayoutConstraint.activate([
-            menber1Label.topAnchor.constraint(equalTo: menber1Button.bottomAnchor, constant: 10),
-            menber1Label.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0)
+            member1Label.topAnchor.constraint(equalTo: member1Button.bottomAnchor, constant: 10),
+            member1Label.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0)
         ])
 
         NSLayoutConstraint.activate([
-            progress1View.topAnchor.constraint(equalTo: menber1Label.bottomAnchor, constant: 10),
+            progress1View.topAnchor.constraint(equalTo: member1Label.bottomAnchor, constant: 10),
             progress1View.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
             progress1View.widthAnchor.constraint(equalToConstant: 100),
             progress1View.heightAnchor.constraint(equalToConstant: 5)
         ])
 
         NSLayoutConstraint.activate([
-            menber2Button.topAnchor.constraint(equalTo: progress1View.bottomAnchor, constant: 30),
-            menber2Button.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -90),
-            menber2Button.widthAnchor.constraint(equalToConstant: 80),
-            menber2Button.heightAnchor.constraint(equalToConstant: 80)
+            member2Button.topAnchor.constraint(equalTo: progress1View.bottomAnchor, constant: 30),
+            member2Button.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -90),
+            member2Button.widthAnchor.constraint(equalToConstant: 80),
+            member2Button.heightAnchor.constraint(equalToConstant: 80)
         ])
 
         NSLayoutConstraint.activate([
-            menber2Label.topAnchor.constraint(equalTo: menber2Button.bottomAnchor, constant: 10),
-            menber2Label.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -90)
+            member2Label.topAnchor.constraint(equalTo: member2Button.bottomAnchor, constant: 10),
+            member2Label.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -90)
         ])
 
         NSLayoutConstraint.activate([
-            progress2View.topAnchor.constraint(equalTo: menber2Label.bottomAnchor, constant: 10),
+            progress2View.topAnchor.constraint(equalTo: member2Label.bottomAnchor, constant: 10),
             progress2View.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -90),
             progress2View.widthAnchor.constraint(equalToConstant: 80),
             progress2View.heightAnchor.constraint(equalToConstant: 5)
         ])
 
         NSLayoutConstraint.activate([
-            menber3Button.topAnchor.constraint(equalTo: progress1View.bottomAnchor, constant: 30),
-            menber3Button.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 90),
-            menber3Button.widthAnchor.constraint(equalToConstant: 80),
-            menber3Button.heightAnchor.constraint(equalToConstant: 80)
+            member3Button.topAnchor.constraint(equalTo: progress1View.bottomAnchor, constant: 30),
+            member3Button.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 90),
+            member3Button.widthAnchor.constraint(equalToConstant: 80),
+            member3Button.heightAnchor.constraint(equalToConstant: 80)
         ])
 
         NSLayoutConstraint.activate([
-            menber3Label.topAnchor.constraint(equalTo: menber3Button.bottomAnchor, constant: 10),
-            menber3Label.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 90)
+            member3Label.topAnchor.constraint(equalTo: member3Button.bottomAnchor, constant: 10),
+            member3Label.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 90)
         ])
 
         NSLayoutConstraint.activate([
-            progress3View.topAnchor.constraint(equalTo: menber3Label.bottomAnchor, constant: 10),
+            progress3View.topAnchor.constraint(equalTo: member3Label.bottomAnchor, constant: 10),
             progress3View.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 90),
             progress3View.widthAnchor.constraint(equalToConstant: 80),
             progress3View.heightAnchor.constraint(equalToConstant: 5)
@@ -303,5 +314,10 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         let cellWidth = 60 // セルの幅を計算
         let cellHeight = 60 // セルの高さ
         return CGSize(width: cellWidth, height: cellHeight)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let memberProfileViewController = MemberProfileViewController() // ここでは適切な初期化方法に変更してください
+        navigationController?.pushViewController(memberProfileViewController, animated: true)
     }
 }

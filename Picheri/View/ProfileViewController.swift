@@ -102,6 +102,7 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "mainYellow")
         setUp()
+        setUpNavigation()
     }
     
     func setUp() {
@@ -115,6 +116,16 @@ class ProfileViewController: UIViewController {
         view.addSubview(editButton)
         view.addSubview(logoutButton)
         setUpConstraints()
+    }
+
+    func setUpNavigation() {
+        // Navigation Barに戻るボタンを追加
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(backButtonTapped))
+        navigationItem.rightBarButtonItem = backButton
+    }
+
+    @objc func backButtonTapped() {
+        self.dismiss(animated: true, completion: nil)
     }
 
     // ボタンのアクション

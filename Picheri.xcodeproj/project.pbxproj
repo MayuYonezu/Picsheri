@@ -20,7 +20,6 @@
 		031346DD2AA23402009AAA0A /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031346DC2AA23402009AAA0A /* PostViewController.swift */; };
 		036243BD2AA24ECF00C5D807 /* MemberProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036243BC2AA24ECF00C5D807 /* MemberProfileViewController.swift */; };
 		036243C02AA2702F00C5D807 /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036243BF2AA2702F00C5D807 /* LoginPresenter.swift */; };
-		036243C22AA360B500C5D807 /* TabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036243C12AA360B500C5D807 /* TabbarViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,7 +38,6 @@
 		031346DC2AA23402009AAA0A /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		036243BC2AA24ECF00C5D807 /* MemberProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberProfileViewController.swift; sourceTree = "<group>"; };
 		036243BF2AA2702F00C5D807 /* LoginPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
-		036243C12AA360B500C5D807 /* TabbarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,7 +92,6 @@
 				031346DA2AA22A5D009AAA0A /* ProfileViewController.swift */,
 				031346DC2AA23402009AAA0A /* PostViewController.swift */,
 				036243BC2AA24ECF00C5D807 /* MemberProfileViewController.swift */,
-				036243C12AA360B500C5D807 /* TabbarViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -195,7 +192,6 @@
 				036243BD2AA24ECF00C5D807 /* MemberProfileViewController.swift in Sources */,
 				031346BD2AA09C05009AAA0A /* AppDelegate.swift in Sources */,
 				031346BF2AA09C05009AAA0A /* SceneDelegate.swift in Sources */,
-				036243C22AA360B500C5D807 /* TabbarViewController.swift in Sources */,
 				031346D92AA1B54B009AAA0A /* MemoryViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

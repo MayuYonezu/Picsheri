@@ -170,10 +170,17 @@ class PostViewController: UIViewController {
             .font: UIFont(name: "Shrikhand-Regular", size: 24) ?? .systemFont(ofSize: 24) // 任意のフォントとサイズに変更
         ]
         navigationController?.navigationBar.titleTextAttributes = titleAttributes
+
+        // Navigation Barに戻るボタンを追加
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(backButtonTapped))
+        navigationItem.rightBarButtonItem = backButton
+    }
+
+    @objc func backButtonTapped() {
+        self.dismiss(animated: true, completion: nil)
     }
 
     private func setUpConstraints() {
-
         NSLayoutConstraint.activate([
             postImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
             postImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
