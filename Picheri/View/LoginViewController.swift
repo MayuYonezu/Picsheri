@@ -1,8 +1,7 @@
 import UIKit
+import Firebase
 
-final class LoginViewController: UIViewController, LoginView {
-
-  var presenter: LoginPresenter!
+final class LoginViewController: UIViewController {
 
   private var setUpButton: UIBarButtonItem!
   private var isSetUpButtonTapped = false
@@ -121,7 +120,6 @@ final class LoginViewController: UIViewController, LoginView {
       loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
       setUpContents()
       setupKeyboardToolbar()
-      presenter = LoginPresenter(view: self)
   }
 
   func setUpContents() {
@@ -328,22 +326,24 @@ final class LoginViewController: UIViewController, LoginView {
     @objc func loginButtonPressed() {
         guard let email = mailAddressTextField.text, !email.isEmpty,
               let password = passWordTextField.text, !password.isEmpty else {
-            showAlert(title: "入力エラー", message: "メールアドレスまたはパスワードが入力されていません")
-            print("メールアドレスまたはパスワードが入力されていません")
+            showAlert(title: "エラー", message: "必要な情報が入力されていません")
             return
         }
-        presenter.loginButtonPressed(email: email, password: password)
+        
+        // Firebase Authenticationのログイン処理を呼び出す
+        loginWithFirebase(email: email, password: password)
+        
     }
 
     @objc func signupButtonPressed() {
         guard let email = mailAddressTextField.text, !email.isEmpty,
               let name = nameTextField.text, !name.isEmpty,
               let password = passWordTextField.text, !password.isEmpty else {
-            showAlert(title: "入力エラー", message: "メールアドレスまたは名前またはパスワードが入力されていません")
-            print("メールアドレスまたは名前またはパスワードが入力されていません")
+            showAlert(title: "エラー", message: "必要な情報が入力されていません")
             return
         }
-        presenter.loginButtonPressed(email: email, password: password)
+        // Firebase Authenticationの新規ユーザー登録処理を呼び出す
+        signUpWithFirebase(email: email, password: password, name: name)
     }
 
     func onLoginSuccess() {
@@ -363,12 +363,9 @@ final class LoginViewController: UIViewController, LoginView {
         self.present(tabBarController, animated: true, completion: nil)
     }
 
-    private func toMemberViewController() {
-        
-    }
-
     func onLoginFailure() {
         print("何かが違うよ")
+        showAlert(title: "ログインエラー", message: "メールアドレスまたはパスワードが違います")
     }
 
     func showAlert(title: String, message: String) {
@@ -377,4 +374,57 @@ final class LoginViewController: UIViewController, LoginView {
         alertController.addAction(okAction)
         self.present(alertController, animated: true, completion: nil)
     }
+
+    func loginWithFirebase(email: String, password: String) {
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+            guard let self = self else { return }
+
+            if let error = error {
+                self.handleError(error)
+            } else {
+                self.onLoginSuccess()
+            }
+        }
+    }
+    
+    func signUpWithFirebase(email: String, password: String, name: String) {
+        Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
+            if let error = error {
+                // 新規ユーザー登録エラー処理
+                self?.handleError(error)
+                print("Firebase signup error: \(error.localizedDescription)")
+            } else {
+                // ユーザー情報の更新
+                let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+                changeRequest?.displayName = name
+                changeRequest?.commitChanges(completion: { (error) in
+                    if let error = error {
+                        print("Error updating user display name: \(error.localizedDescription)")
+                    }
+                })
+                
+                // 新規ユーザー登録成功処理
+                self?.onLoginSuccess()
+                print("Firebase signup success")
+            }
+        }
+    }
+
+    func handleError(_ error: Error) {
+        let errorCode = (error as NSError).code
+
+        switch errorCode {
+        case AuthErrorCode.invalidEmail.rawValue:
+            showAlert(title: "エラー", message: "無効なメールアドレスです")
+        case AuthErrorCode.weakPassword.rawValue:
+            showAlert(title: "エラー", message: "パスワードを6文字以上に設定してください")
+        case AuthErrorCode.userNotFound.rawValue:
+            showAlert(title: "エラー", message: "このメールアドレスは登録されていません")
+        case AuthErrorCode.wrongPassword.rawValue:
+            showAlert(title: "エラー", message: "パスワードが違います")
+        default:
+            showAlert(title: "エラー", message: "エラーが発生しました")
+        }
+    }
+
 }
