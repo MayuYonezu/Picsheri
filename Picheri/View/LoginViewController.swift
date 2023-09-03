@@ -348,9 +348,23 @@ final class LoginViewController: UIViewController, LoginView {
 
     func onLoginSuccess() {
         print("success")
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let tabbarVC = storyboard.instantiateViewController(withIdentifier: "TabbarViewController") as! TabbarViewController
-        self.navigationController?.present(tabbarVC, animated: true)
+        let memberViewController = MemberViewController()
+        let memberNavigationController = UINavigationController(rootViewController: memberViewController)
+        memberNavigationController.tabBarItem = UITabBarItem(title: "推し", image: UIImage(systemName: "heart"), selectedImage: UIImage(systemName: "heart.fill"))
+
+        let memoryViewController = MemoryViewController()
+        let memoryNavigationController = UINavigationController(rootViewController: memoryViewController)
+        memoryNavigationController.tabBarItem = UITabBarItem(title: "記録", image: UIImage(systemName: "book"), selectedImage: UIImage(systemName: "book.fill"))
+
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [memberNavigationController, memoryNavigationController]
+
+        tabBarController.modalPresentationStyle = .fullScreen
+        self.present(tabBarController, animated: true, completion: nil)
+    }
+
+    private func toMemberViewController() {
+        
     }
 
     func onLoginFailure() {
