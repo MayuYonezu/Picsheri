@@ -436,10 +436,10 @@ extension PostViewController: UITextFieldDelegate {
     }
 
     @objc private func addButtonTapped() {
-        let alertController = UIAlertController(title: "新しい選択肢を追加", message: "新しい選択肢を入力してください", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "新しい推しを追加", message: "推しの名前を入力してください", preferredStyle: .alert)
         
         alertController.addTextField { (textField) in
-            textField.placeholder = "選択肢を入力"
+            textField.placeholder = "推しの名前"
         }
         
         let addAction = UIAlertAction(title: "追加", style: .default) { (_) in
