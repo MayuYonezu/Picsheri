@@ -53,7 +53,7 @@ class MemberProfileViewController: UIViewController, UIImagePickerControllerDele
         view.addSubview(nameButton)
         profileButton.addTarget(self, action: #selector(profileButtonTapped), for: .touchUpInside)
         nameButton.addTarget(self, action: #selector(nameButtonTapped), for: .touchUpInside)
-        // progress1Viewをインスタンス化
+
         progressView = UIProgressView()
         progressView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(progressView)

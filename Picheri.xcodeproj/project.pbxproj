@@ -26,6 +26,7 @@
 		036243D02AA4F4E200C5D807 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 036243CF2AA4F4E200C5D807 /* FirebaseFirestore */; };
 		036243D22AA4F4E200C5D807 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 036243D12AA4F4E200C5D807 /* FirebaseStorage */; };
 		036243D42AA5059F00C5D807 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036243D32AA5059F00C5D807 /* Model.swift */; };
+		036243D62AA7541D00C5D807 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 036243D52AA7541D00C5D807 /* Colors.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		036243BC2AA24ECF00C5D807 /* MemberProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberProfileViewController.swift; sourceTree = "<group>"; };
 		036243C82AA4F32200C5D807 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		036243D32AA5059F00C5D807 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		036243D52AA7541D00C5D807 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 				036243D32AA5059F00C5D807 /* Model.swift */,
 				031346C22AA09C05009AAA0A /* Main.storyboard */,
 				031346C52AA09C06009AAA0A /* Assets.xcassets */,
+				036243D52AA7541D00C5D807 /* Colors.xcassets */,
 				031346C72AA09C06009AAA0A /* LaunchScreen.storyboard */,
 				031346CA2AA09C06009AAA0A /* Info.plist */,
 				036243C82AA4F32200C5D807 /* GoogleService-Info.plist */,
@@ -189,6 +192,7 @@
 				031346C92AA09C06009AAA0A /* LaunchScreen.storyboard in Resources */,
 				031346C62AA09C06009AAA0A /* Assets.xcassets in Resources */,
 				036243C92AA4F32200C5D807 /* GoogleService-Info.plist in Resources */,
+				036243D62AA7541D00C5D807 /* Colors.xcassets in Resources */,
 				031346C42AA09C05009AAA0A /* Main.storyboard in Resources */,
 				031346D42AA09D77009AAA0A /* Shrikhand-Regular.otf in Resources */,
 			);
