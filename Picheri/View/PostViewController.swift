@@ -9,8 +9,8 @@ class PostViewController: UIViewController {
     private var saveButton: UIBarButtonItem!
     
     var selectedMember: String?
-    private var iconPicker: UIPickerView!
-    private var icons: [String] = [] // Pickerの中身を保持する配列
+    private var memberPicker: UIPickerView!
+    private var members: [String] = []
     
     let geocoder = CLGeocoder()
     var place_longitude: CLLocationDegrees = 0.0
@@ -30,7 +30,7 @@ class PostViewController: UIViewController {
         return imageView
     }()
     
-    private let iconImageView: UIImageView = {
+    private let memberImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
@@ -38,7 +38,7 @@ class PostViewController: UIViewController {
         return imageView
     }()
     
-    private let iconTextField: UITextField = {
+    private let memberTextField: UITextField = {
         let textField = UITextField()
         textField.tintColor = .clear
         textField.font = UIFont.systemFont(ofSize: 14)
@@ -50,7 +50,7 @@ class PostViewController: UIViewController {
         return textField
     }()
     
-    private let iconTextFieldUnderlineView: UIView = {
+    private let memberTextFieldUnderlineView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(named: "subGray") ?? UIColor.gray
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -160,9 +160,9 @@ class PostViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "mainYellow")
         view.addSubview(postImageView)
-        view.addSubview(iconImageView)
-        view.addSubview(iconTextField)
-        view.addSubview(iconTextFieldUnderlineView)
+        view.addSubview(memberImageView)
+        view.addSubview(memberTextField)
+        view.addSubview(memberTextFieldUnderlineView)
         view.addSubview(placeImageView)
         view.addSubview(placeTextField)
         view.addSubview(placeTextFieldUnderlineView)
@@ -175,6 +175,8 @@ class PostViewController: UIViewController {
         view.addSubview(postButton)
         setUpNavigation()
         setUpConstraints()
+        fetchMembersFromFirebase()
+        print(members)
     }
     
     private func setUpNavigation() {
@@ -200,21 +202,24 @@ class PostViewController: UIViewController {
         if let errorMessage = validateFields() {
             displayAlert(message: errorMessage)
         } else {
-            uploadImageAndSaveToFirestore() // 画像の保存とFirestoreへのデータ保存を行うメソッドを呼び出す
-            self.presentingViewController?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+            if let member = memberTextField.text {
+                saveMemberIconToFirestore(member: member)
+                uploadImageAndSaveToFirestore()
+                self.presentingViewController?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+            }
         }
     }
     
     private func setUpConstraints() {
-        iconTextField.delegate = self
-        iconTextField.inputView = iconPicker
+        memberTextField.delegate = self
+        memberTextField.inputView = memberPicker
         dateTextField.delegate = self
         placeTextField.delegate = self
         titleTextField.delegate = self
         setupKeyboardToolbar()
         let pickerView = UIPickerView()
         pickerView.delegate = self
-        iconTextField.inputView = pickerView
+        memberTextField.inputView = pickerView
         postButton.addTarget(self, action: #selector(postButtonTapped), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
@@ -225,35 +230,35 @@ class PostViewController: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
-            iconImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
-            iconImageView.leadingAnchor.constraint(equalTo: postImageView.trailingAnchor, constant: 10),
-            iconImageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.05),
-            iconImageView.heightAnchor.constraint(equalTo: iconImageView.widthAnchor, multiplier: 1)
+            memberImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
+            memberImageView.leadingAnchor.constraint(equalTo: postImageView.trailingAnchor, constant: 10),
+            memberImageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.05),
+            memberImageView.heightAnchor.constraint(equalTo: memberImageView.widthAnchor, multiplier: 1)
         ])
         
         NSLayoutConstraint.activate([
-            iconTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            iconTextField.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 7),
-            iconTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            iconTextField.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.05)
+            memberTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            memberTextField.leadingAnchor.constraint(equalTo: memberImageView.trailingAnchor, constant: 7),
+            memberTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            memberTextField.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.05)
         ])
         
         NSLayoutConstraint.activate([
-            iconTextFieldUnderlineView.topAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 3),
-            iconTextFieldUnderlineView.leadingAnchor.constraint(equalTo: postImageView.trailingAnchor, constant: 10),
-            iconTextFieldUnderlineView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            iconTextFieldUnderlineView.heightAnchor.constraint(equalToConstant: 1)
+            memberTextFieldUnderlineView.topAnchor.constraint(equalTo: memberImageView.bottomAnchor, constant: 3),
+            memberTextFieldUnderlineView.leadingAnchor.constraint(equalTo: postImageView.trailingAnchor, constant: 10),
+            memberTextFieldUnderlineView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            memberTextFieldUnderlineView.heightAnchor.constraint(equalToConstant: 1)
         ])
         
         NSLayoutConstraint.activate([
-            dateImageView.topAnchor.constraint(equalTo: iconTextFieldUnderlineView.topAnchor, constant: 5),
+            dateImageView.topAnchor.constraint(equalTo: memberTextFieldUnderlineView.topAnchor, constant: 5),
             dateImageView.leadingAnchor.constraint(equalTo: postImageView.trailingAnchor, constant: 10),
             dateImageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.05),
             dateImageView.heightAnchor.constraint(equalTo: dateImageView.widthAnchor, multiplier: 1)
         ])
         
         NSLayoutConstraint.activate([
-            dateTextField.topAnchor.constraint(equalTo: iconTextFieldUnderlineView.bottomAnchor, constant: 6),
+            dateTextField.topAnchor.constraint(equalTo: memberTextFieldUnderlineView.bottomAnchor, constant: 6),
             dateTextField.leadingAnchor.constraint(equalTo: dateImageView.trailingAnchor, constant: 7),
             dateTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             dateTextField.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.05)
@@ -333,7 +338,7 @@ class PostViewController: UIViewController {
         // 必要な情報を取得
         let place = placeTextField.text ?? ""
         let date = dateTextField.text ?? ""
-        let icon = iconTextField.text ?? ""
+        let member = memberTextField.text ?? ""
         let longitude = place_longitude
         let latitude = place_latitude
         let comment = commentTextView.text ?? ""
@@ -346,7 +351,7 @@ class PostViewController: UIViewController {
         let data: [String: Any] = [
             "place": place,
             "date": date,
-            "icon": icon,
+            "member": member,
             "longitude": longitude,
             "latitude": latitude,
             "comment": comment,
@@ -365,7 +370,7 @@ class PostViewController: UIViewController {
         }
     }
     private func validateFields() -> String? {
-        if iconTextField.text?.isEmpty ?? true {
+        if memberTextField.text?.isEmpty ?? true {
             return "アイコンが入力されていません"
         }
         if dateTextField.text?.isEmpty ?? true {
@@ -448,7 +453,7 @@ class PostViewController: UIViewController {
         // 必要な情報を取得
         let place = placeTextField.text ?? ""
         let date = dateTextField.text ?? ""
-        let icon = iconTextField.text ?? ""
+        let member = memberTextField.text ?? ""
         let longitude = place_longitude
         let latitude = place_latitude
         let comment = commentTextView.text ?? ""
@@ -461,7 +466,7 @@ class PostViewController: UIViewController {
         let data: [String: Any] = [
             "place": place,
             "date": date,
-            "icon": icon,
+            "member": member,
             "longitude": longitude,
             "latitude": latitude,
             "comment": comment,
@@ -481,6 +486,65 @@ class PostViewController: UIViewController {
         }
     }
     
+    private func saveMemberIconToFirestore(member: String) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            print("User is not logged in.")
+            return
+        }
+        
+        let db = Firestore.firestore()
+        let memberRef = db.collection("users").document(uid).collection("members")
+        
+        // アイコン名の重複チェック
+        memberRef.whereField("member", isEqualTo: member).getDocuments { querySnapshot, error in
+            if let error = error {
+                print("Error checking duplicate member: \(error)")
+                return
+            }
+            
+            if querySnapshot?.documents.isEmpty == true {
+                // 重複がない場合のみデータを追加
+                let data: [String: Any] = [
+                    "member": member
+                ]
+                
+                memberRef.addDocument(data: data) { error in
+                    if let error = error {
+                        print("Error adding member member document: \(error)")
+                    } else {
+                        print("Member member document added successfully.")
+                    }
+                }
+            } else {
+                print("Icon already exists.")
+            }
+        }
+    }
+
+    private func fetchMembersFromFirebase() {
+        let db = Firestore.firestore()
+        let membersCollection = db.collection("users").document(UserModel.shared.uid ?? "").collection("members")
+
+        membersCollection.getDocuments { querySnapshot, error in
+            if let error = error {
+                print("Error fetching members: \(error.localizedDescription)")
+                return
+            }
+
+            var memberNames: [String] = []
+
+            for document in querySnapshot!.documents {
+                if let memberName = document.data()["member"] as? String {
+                    memberNames.append(memberName)
+                }
+            }
+
+            self.members = memberNames
+            print("取り出す", memberNames)
+        }
+    }
+
+
 }
 
 class PlaceholderTextView: UITextView {
@@ -552,7 +616,7 @@ extension PostViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         // テキストフィールドがタップされた際にピッカービューを表示する処理
         //        addDoneButtonAndAddButtonToPickerView()
-        iconTextFieldTapped()
+        memberTextFieldTapped()
         if textField == dateTextField {
             return false
         }
@@ -591,7 +655,7 @@ extension PostViewController: UITextFieldDelegate {
         addButton.tintColor = UIColor(named: "mainGray")
         
         toolBar.setItems([addButton, spaceButton, doneButton], animated: false)
-        iconTextField.inputAccessoryView = toolBar
+        memberTextField.inputAccessoryView = toolBar
     }
     
     @objc private func doneButtonTapped() {
@@ -602,8 +666,8 @@ extension PostViewController: UITextFieldDelegate {
         showIconInputAlert()
     }
     
-    private func iconTextFieldTapped() {
-        if icons.isEmpty {
+    private func memberTextFieldTapped() {
+        if members.isEmpty {
             // Pickerの中身が空の場合、アラートを表示してアイコン入力画面に遷移
             showIconInputAlert()
         } else {
@@ -620,13 +684,13 @@ extension PostViewController: UITextFieldDelegate {
         
         let addAction = UIAlertAction(title: "追加", style: .default) { (_) in
             if let newOption = alertController.textFields?.first?.text, !newOption.isEmpty {
-                self.icons.append(newOption) // リストに選択肢を追加
-                self.iconTextField.text = newOption // テキストフィールドに選択肢を表示
+                self.members.append(newOption) // リストに選択肢を追加
+                self.memberTextField.text = newOption // テキストフィールドに選択肢を表示
             } else {
-                self.iconTextField.text = self.icons.first // リストの1番目の選択肢を表示
+                self.memberTextField.text = self.members.first // リストの1番目の選択肢を表示
             }
-            self.iconTextField.resignFirstResponder() // ピッカービューを閉じる
-            self.iconTextField.reloadInputViews() // ピッカービューの再読み込み
+            self.memberTextField.resignFirstResponder() // ピッカービューを閉じる
+            self.memberTextField.reloadInputViews() // ピッカービューの再読み込み
         }
         
         let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
@@ -682,16 +746,16 @@ extension PostViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return icons.count
+        return members.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return icons[row]
+        return members[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         // ピッカービューで選択された内容を処理する
-        selectedMember = icons[row]
-        iconTextField.text = selectedMember
+        selectedMember = members[row]
+        memberTextField.text = selectedMember
     }
 }

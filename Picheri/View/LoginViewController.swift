@@ -121,8 +121,12 @@ final class LoginViewController: UIViewController {
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         setUpContents()
         setupKeyboardToolbar()
-        fetchUserInfoFromFirestore()
         print("aaa")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchUserInfoFromFirestore()
     }
     
     func setUpContents() {
