@@ -481,7 +481,8 @@ class PostViewController: UIViewController {
                 self.showAlert(title: "エラー", message: "保存に失敗しました。")
             } else {
                 print("Document added successfully.")
-                // データ追加が成功したら何らかの処理を行う（例: 画面遷移など）
+                let newDocumentID = db.collection("users").document(uid).collection("memory").addDocument(data: data).documentID
+                print("New document ID: \(newDocumentID)")
             }
         }
     }
