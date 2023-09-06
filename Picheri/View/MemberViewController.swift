@@ -11,6 +11,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
     private var progress3View: UIProgressView!
 
     private var members: [String] = []
+    private var allMembers: [Member] = []
     private var memberCount = 0
 
     private let reuseIdentifier = "Cell"
@@ -131,7 +132,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchMembersFromFirebase()
+        fetchMemberDocumentCounts()
         setUpNavigation()
     }
 
@@ -226,22 +227,21 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         cropViewController.dismiss(animated: true, completion: nil)
     }
 
-    private func setUp() {
-        self.memberCount
-        print("setup時のカウント数", self.memberCount)
-        if self.memberCount >= 1 {
+    private func setUp(memberCount: Int) {
+        print("setup時のカウント数", memberCount)
+        if memberCount >= 1 {
             addMember1UI()
         }
 
-        if self.memberCount >= 2 {
+        if memberCount >= 2 {
             addMember2UI()
         }
 
-        if self.memberCount >= 3 {
+        if memberCount >= 3 {
             addMember3UI()
         }
 
-        if self.memberCount >= 4 {
+        if memberCount >= 4 {
             addCollectionView()
         }
         addPlusButton()
@@ -394,28 +394,76 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         navigationController?.pushViewController(memberProfileViewController, animated: true)
     }
 
-    private func fetchMembersFromFirebase() {
+    private func fetchMemberDocumentCounts() {
         let db = Firestore.firestore()
         let membersCollection = db.collection("users").document(UserModel.shared.uid ?? "").collection("members")
-
-        membersCollection.getDocuments { querySnapshot, error in
+        
+        membersCollection.getDocuments { [self] querySnapshot, error in
             if let error = error {
                 print("Error fetching members: \(error.localizedDescription)")
                 return
             }
 
-            var memberNames: [String] = []
-
+            var memberDocumentCounts: [String: Int] = [:]
+            
+            let dispatchGroup = DispatchGroup()
+            
             for document in querySnapshot!.documents {
-                if let memberName = document.data()["member"] as? String {
-                    memberNames.append(memberName)
+                let memberName = document.data()["member"] as? String ?? ""
+
+                dispatchGroup.enter()
+                
+                let memoryCollection = document.reference.collection("memory")
+                memoryCollection.getDocuments { subQuerySnapshot, subError in
+                    if let subError = subError {
+                        print("Error fetching memory collection: \(subError.localizedDescription)")
+                    } else {
+                        let documentCount = subQuerySnapshot?.documents.count ?? 0
+                        memberDocumentCounts[memberName] = documentCount
+                    }
+                    
+                    dispatchGroup.leave()
                 }
             }
-
-            self.members = memberNames
-            self.memberCount = self.members.count
-            print("取り出す", memberNames, self.memberCount)
-            self.setUp()
+            dispatchGroup.notify(queue: .main) {
+                print("Member document counts: \(memberDocumentCounts)")
+                setUp(memberCount: memberDocumentCounts.count)
+            }
         }
+
+    }
+
+
+
+//    private func updateUI(with top3Members: [(name: String, imageURL: String?)]) {
+//        // top3Membersが空の場合や要素数が足りない場合に備えて安全に取得します
+//        if top3Members.count >= 1 {
+//            member1Label.text = top3Members[0].name
+//        } else {
+//            member1Label.text = "No data available"
+//        }
+//
+//        if top3Members.count >= 2 {
+//            member2Label.text = top3Members[1].name
+//        } else {
+//            member2Label.text = "No data available"
+//        }
+//
+//        if top3Members.count >= 3 {
+//            member3Label.text = top3Members[2].name
+//        } else {
+//            member3Label.text = "No data available"
+//        }
+//        setUp()
+//    }
+}
+
+struct Member {
+    let name: String
+    let imageURL: String?
+    
+    init(data: [String: Any]) {
+        self.name = data["member"] as? String ?? ""
+        self.imageURL = data["imageURL"] as? String
     }
 }
