@@ -227,19 +227,28 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         cropViewController.dismiss(animated: true, completion: nil)
     }
 
-    private func setUp(memberCount: Int) {
+    private func setUp(memberCount: Int, memberList: [String: Int]) {
         print("setup時のカウント数", memberCount)
-        if memberCount >= 1 {
-            addMember1UI()
+        let keys = memberList.map { $0.key }
+
+        if keys.count >= 1 {
+            let firstKey = keys[0] // 1st key
+            print("1st Key: \(firstKey)")
+            addMember1UI(name: firstKey)
         }
 
-        if memberCount >= 2 {
-            addMember2UI()
+        if keys.count >= 2 {
+            let secondKey = keys[1] // 2nd key
+            print("2nd Key: \(secondKey)")
+            addMember2UI(name: secondKey)
         }
 
-        if memberCount >= 3 {
-            addMember3UI()
+        if keys.count >= 3 {
+            let thirdKey = keys[2] // 3rd key
+            print("3rd Key: \(thirdKey)")
+            addMember3UI(name: thirdKey)
         }
+
 
         if memberCount >= 4 {
             addCollectionView()
@@ -248,7 +257,9 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         memberCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
     }
 
-    private func addMember1UI() {
+    private func addMember1UI(name: String) {
+        member1Label.text = name
+        
         view.addSubview(member1Button)
         view.addSubview(member1Label)
         
@@ -281,7 +292,8 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
     }
 
 
-    private func addMember2UI() {
+    private func addMember2UI(name: String) {
+        member2Label.text = name
         view.addSubview(member2Button)
         view.addSubview(member2Label)
         progress2View = UIProgressView()
@@ -309,7 +321,8 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         ])
     }
 
-    private func addMember3UI() {
+    private func addMember3UI(name: String) {
+        member3Label.text = name
         view.addSubview(member3Button)
         view.addSubview(member3Label)
         progress3View = UIProgressView()
@@ -428,7 +441,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
             dispatchGroup.notify(queue: .main) {
                 let memberCountArray = memberDocumentCounts.sorted { $0.value > $1.value }
                 print("Member document counts: \(memberCountArray)")
-                setUp(memberCount: memberDocumentCounts.count)
+                setUp(memberCount: memberDocumentCounts.count, memberList: memberDocumentCounts)
             }
         }
 
