@@ -203,9 +203,7 @@ class PostViewController: UIViewController {
             displayAlert(message: errorMessage)
         } else {
             if let member = memberTextField.text {
-                saveMemberIconToFirestore(member: member)
                 uploadImageAndSaveToFirestore()
-                self.presentingViewController?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
             }
         }
     }
@@ -483,45 +481,67 @@ class PostViewController: UIViewController {
                 print("Document added successfully.")
                 let newDocumentID = db.collection("users").document(uid).collection("memory").addDocument(data: data).documentID
                 print("New document ID: \(newDocumentID)")
+                self.saveMemberIfNotExists(db: db, memberCollectionRef: db.collection("users").document(uid).collection("members"), member: member, memoryDocumentID: newDocumentID)
             }
         }
     }
     
-    private func saveMemberIconToFirestore(member: String) {
-        guard let uid = Auth.auth().currentUser?.uid else {
-            print("User is not logged in.")
-            return
-        }
-        
-        let db = Firestore.firestore()
-        let memberRef = db.collection("users").document(uid).collection("members")
-        
-        // アイコン名の重複チェック
-        memberRef.whereField("member", isEqualTo: member).getDocuments { querySnapshot, error in
+    private func saveMemberIfNotExists(db: Firestore, memberCollectionRef: CollectionReference, member: String, memoryDocumentID: String) {
+        memberCollectionRef.whereField("member", isEqualTo: member).getDocuments { querySnapshot, error in
             if let error = error {
-                print("Error checking duplicate member: \(error)")
+                print("エラー: メンバーの確認中にエラーが発生しました: \(error)")
                 return
             }
             
             if querySnapshot?.documents.isEmpty == true {
-                // 重複がない場合のみデータを追加
-                let data: [String: Any] = [
-                    "member": member
-                ]
+                // メンバーが存在しない場合、新しいメンバーを保存
+                self.saveNewMemberData(db: db, memberCollectionRef: memberCollectionRef, member: member, memoryDocumentID: memoryDocumentID)
+            } else {
+                print("メンバーは既に存在します。")
                 
-                memberRef.addDocument(data: data) { error in
-                    if let error = error {
-                        print("Error adding member member document: \(error)")
-                    } else {
-                        print("Member member document added successfully.")
+                // メンバーが既に存在する場合、該当メンバーのメモリコレクション内に memoryDocumentID を保存
+                if let existingMemberDocument = querySnapshot?.documents.first {
+                    let memberMemoryRef = existingMemberDocument.reference.collection("memory").document(memoryDocumentID)
+                    memberMemoryRef.setData(["memoryDocumentID": memoryDocumentID]) { error in
+                        if let error = error {
+                            print("エラー: メンバーのメモリコレクション内への memoryDocumentID の保存に失敗しました: \(error)")
+                        } else {
+                            print("メンバーのメモリコレクション内への memoryDocumentID の保存に成功しました。")
+                        }
                     }
                 }
+            }
+        }
+        self.presentingViewController?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+    }
+
+    private func saveNewMemberData(db: Firestore, memberCollectionRef: CollectionReference, member: String, memoryDocumentID: String) {
+        var data: [String: Any] = [
+            "member": member
+        ]
+        
+        // メンバーを追加してドキュメントIDを取得
+        let newMemberDocumentRef = memberCollectionRef.addDocument(data: data) { error in
+            if let error = error {
+                print("エラー: メンバードキュメントの追加中にエラーが発生しました: \(error)")
             } else {
-                print("Icon already exists.")
+                print("メンバードキュメントの追加に成功しました。")
+            }
+        }
+        
+        // 新しいメンバードキュメントの中に対応するメモリのドキュメントIDを保存
+        let memberMemoryRef = newMemberDocumentRef.collection("memory").document(memoryDocumentID)
+        
+        memberMemoryRef.setData(["memoryDocumentID": memoryDocumentID]) { error in
+            if let error = error {
+                print("エラー: メンバーのメモリコレクション内への memoryDocumentID の保存に失敗しました: \(error)")
+            } else {
+                print("メンバーのメモリコレクション内への memoryDocumentID の保存に成功しました。")
             }
         }
     }
 
+    // pickerのためにmemberを呼び出し
     private func fetchMembersFromFirebase() {
         let db = Firestore.firestore()
         let membersCollection = db.collection("users").document(UserModel.shared.uid ?? "").collection("members")

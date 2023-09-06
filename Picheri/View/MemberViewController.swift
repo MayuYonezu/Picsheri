@@ -125,10 +125,14 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "mainYellow")
-        setUpNavigation()
-        fetchMembersFromFirebase()
         memberCollectionView.delegate = self
         memberCollectionView.dataSource = self
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchMembersFromFirebase()
+        setUpNavigation()
     }
 
     private func setUpNavigation() {
