@@ -446,7 +446,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
             dispatchGroup.notify(queue: .main) {
                 let memberCountArray = members.sorted { $0.documentCount > $1.documentCount }
                 print("Members sorted by document count: \(memberCountArray)")
-                setUp(memberCount: members.count, memberList: memberCountArray)
+                self.setUp(memberCount: members.count, memberList: memberCountArray)
             }
         }
     }
