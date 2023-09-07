@@ -166,12 +166,17 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         ]
         navigationController?.navigationBar.titleTextAttributes = titleAttributes
 
-        member1Button.addTarget(self, action: #selector(memberButtonPressed), for: .touchUpInside)
+        member1Button.addTarget(self, action: #selector(member1ButtonPressed), for: .touchUpInside)
         member2Button.addTarget(self, action: #selector(memberButtonPressed), for: .touchUpInside)
         member3Button.addTarget(self, action: #selector(memberButtonPressed), for: .touchUpInside)
     }
 
     @objc func memberButtonPressed() {
+        let memberProfileViewController = MemberProfileViewController()
+        navigationController?.pushViewController(memberProfileViewController, animated: true)
+    }
+
+    @objc func member1ButtonPressed() {
         let memberProfileViewController = MemberProfileViewController()
         navigationController?.pushViewController(memberProfileViewController, animated: true)
     }
@@ -227,33 +232,29 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         cropViewController.dismiss(animated: true, completion: nil)
     }
 
-    private func setUp(memberCount: Int, memberList: [Dictionary<String, Int>.Element]) {
-        print("setup時のカウント数", memberCount)
-        let memberDocumentCounts = Array(memberList)
-        let totalValue = memberDocumentCounts.map { $0.value }.reduce(0, +)
+    private func setUp(memberCount: Int, memberList: [Member]) {
+        let totalValue = memberList.map { $0.documentCount }.reduce(0, +)
         print("Total Value: \(totalValue)")
-        if memberDocumentCounts.count >= 1 {
-            let firstKey = memberDocumentCounts[0].key
-            let firstValue = memberDocumentCounts[0].value
-            addMember1UI(name: firstKey, count: firstValue, allCount: totalValue)
-            print("1st Key: \(firstKey), 1st Value: \(firstValue)")
+        
+        if memberList.count >= 1 {
+            let firstMember = memberList[0]
+            addMember1UI(name: firstMember.name, count: firstMember.documentCount, allCount: totalValue)
+            print("1st Key: \(firstMember.name), 1st Value: \(firstMember.documentCount)")
         }
 
-        if memberDocumentCounts.count >= 2 {
-            let secondKey = memberDocumentCounts[1].key
-            let secondValue = memberDocumentCounts[1].value
-            addMember2UI(name: secondKey, count: secondValue, allCount: totalValue)
-            print("2nd Key: \(secondKey), 2nd Value: \(secondValue)")
+        if memberList.count >= 2 {
+            let secondMember = memberList[1]
+            addMember2UI(name: secondMember.name, count: secondMember.documentCount, allCount: totalValue)
+            print("2nd Key: \(secondMember.name), 2nd Value: \(secondMember.documentCount)")
         }
 
-        if memberDocumentCounts.count >= 3 {
-            let thirdKey = memberDocumentCounts[2].key
-            let thirdValue = memberDocumentCounts[2].value
-            addMember3UI(name: thirdKey, count: thirdValue, allCount: totalValue)
-            print("3rd Key: \(thirdKey), 3rd Value: \(thirdValue)")
+        if memberList.count >= 3 {
+            let thirdMember = memberList[2]
+            addMember3UI(name: thirdMember.name, count: thirdMember.documentCount, allCount: totalValue)
+            print("3rd Key: \(thirdMember.name), 3rd Value: \(thirdMember.documentCount)")
         }
 
-        if memberDocumentCounts.count >= 4 {
+        if memberList.count >= 4 {
             addCollectionView()
         }
         addPlusButton()
@@ -418,12 +419,14 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
                 return
             }
 
-            var memberDocumentCounts: [String: Int] = [:]
+            var members: [Member] = [] // Member オブジェクトを格納する配列
             
             let dispatchGroup = DispatchGroup()
             
             for document in querySnapshot!.documents {
-                let memberName = document.data()["member"] as? String ?? ""
+                let memberData = document.data()
+                var member = Member(data: memberData) // Firestore データから Member オブジェクトを作成
+                members.append(member) // Member オブジェクトを配列に追加
 
                 dispatchGroup.enter()
                 
@@ -433,52 +436,32 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
                         print("Error fetching memory collection: \(subError.localizedDescription)")
                     } else {
                         let documentCount = subQuerySnapshot?.documents.count ?? 0
-                        memberDocumentCounts[memberName] = documentCount
+                        member.documentCount = documentCount // メモリのドキュメント数を更新
                     }
                     
                     dispatchGroup.leave()
                 }
             }
+            
             dispatchGroup.notify(queue: .main) {
-                let memberCountArray = memberDocumentCounts.sorted { $0.value > $1.value }
-                print("Member document counts: \(memberCountArray)")
-                setUp(memberCount: memberDocumentCounts.count, memberList: memberCountArray)
+                let memberCountArray = members.sorted { $0.documentCount > $1.documentCount }
+                print("Members sorted by document count: \(memberCountArray)")
+                setUp(memberCount: members.count, memberList: memberCountArray)
             }
         }
-
     }
-
-
-
-//    private func updateUI(with top3Members: [(name: String, imageURL: String?)]) {
-//        // top3Membersが空の場合や要素数が足りない場合に備えて安全に取得します
-//        if top3Members.count >= 1 {
-//            member1Label.text = top3Members[0].name
-//        } else {
-//            member1Label.text = "No data available"
-//        }
-//
-//        if top3Members.count >= 2 {
-//            member2Label.text = top3Members[1].name
-//        } else {
-//            member2Label.text = "No data available"
-//        }
-//
-//        if top3Members.count >= 3 {
-//            member3Label.text = top3Members[2].name
-//        } else {
-//            member3Label.text = "No data available"
-//        }
-//        setUp()
-//    }
 }
 
 struct Member {
     let name: String
     let imageURL: String?
+    let documentID: String?
+    var documentCount: Int
     
     init(data: [String: Any]) {
         self.name = data["member"] as? String ?? ""
-        self.imageURL = data["imageURL"] as? String
+        self.imageURL = data["imageURL"] as? String ?? ""
+        self.documentID = data["documentID"] as? String ?? ""
+        self.documentCount = data["count"] as? Int ?? 0
     }
 }
