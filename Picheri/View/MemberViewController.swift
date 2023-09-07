@@ -227,37 +227,40 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         cropViewController.dismiss(animated: true, completion: nil)
     }
 
-    private func setUp(memberCount: Int, memberList: [String: Int]) {
+    private func setUp(memberCount: Int, memberList: [Dictionary<String, Int>.Element]) {
         print("setup時のカウント数", memberCount)
-        let keys = memberList.map { $0.key }
-
-        if keys.count >= 1 {
-            let firstKey = keys[0] // 1st key
-            print("1st Key: \(firstKey)")
-            addMember1UI(name: firstKey)
+        let memberDocumentCounts = Array(memberList)
+        let totalValue = memberDocumentCounts.map { $0.value }.reduce(0, +)
+        print("Total Value: \(totalValue)")
+        if memberDocumentCounts.count >= 1 {
+            let firstKey = memberDocumentCounts[0].key
+            let firstValue = memberDocumentCounts[0].value
+            addMember1UI(name: firstKey, count: firstValue, allCount: totalValue)
+            print("1st Key: \(firstKey), 1st Value: \(firstValue)")
         }
 
-        if keys.count >= 2 {
-            let secondKey = keys[1] // 2nd key
-            print("2nd Key: \(secondKey)")
-            addMember2UI(name: secondKey)
+        if memberDocumentCounts.count >= 2 {
+            let secondKey = memberDocumentCounts[1].key
+            let secondValue = memberDocumentCounts[1].value
+            addMember2UI(name: secondKey, count: secondValue, allCount: totalValue)
+            print("2nd Key: \(secondKey), 2nd Value: \(secondValue)")
         }
 
-        if keys.count >= 3 {
-            let thirdKey = keys[2] // 3rd key
-            print("3rd Key: \(thirdKey)")
-            addMember3UI(name: thirdKey)
+        if memberDocumentCounts.count >= 3 {
+            let thirdKey = memberDocumentCounts[2].key
+            let thirdValue = memberDocumentCounts[2].value
+            addMember3UI(name: thirdKey, count: thirdValue, allCount: totalValue)
+            print("3rd Key: \(thirdKey), 3rd Value: \(thirdValue)")
         }
 
-
-        if memberCount >= 4 {
+        if memberDocumentCounts.count >= 4 {
             addCollectionView()
         }
         addPlusButton()
         memberCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
     }
 
-    private func addMember1UI(name: String) {
+    private func addMember1UI(name: String, count: Int, allCount: Int) {
         member1Label.text = name
         
         view.addSubview(member1Button)
@@ -267,6 +270,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         progress1View = UIProgressView()
         progress1View.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(progress1View)
+        progress1View.progress = Float(count) / Float(allCount)
 
         NSLayoutConstraint.activate([
             member1Button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
@@ -286,20 +290,17 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
             progress1View.widthAnchor.constraint(equalToConstant: 100),
             progress1View.heightAnchor.constraint(equalToConstant: 5)
         ])
-        
-        // 貢献度
-        progress1View.progress = 0.9
     }
 
 
-    private func addMember2UI(name: String) {
+    private func addMember2UI(name: String, count: Int, allCount: Int) {
         member2Label.text = name
         view.addSubview(member2Button)
         view.addSubview(member2Label)
         progress2View = UIProgressView()
         progress2View.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(progress2View)
-        progress2View.progress = 0.2
+        progress2View.progress = Float(count) / Float(allCount)
         
         NSLayoutConstraint.activate([
             member2Button.topAnchor.constraint(equalTo: progress1View.bottomAnchor, constant: 30),
@@ -321,14 +322,14 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         ])
     }
 
-    private func addMember3UI(name: String) {
+    private func addMember3UI(name: String, count: Int, allCount: Int) {
         member3Label.text = name
         view.addSubview(member3Button)
         view.addSubview(member3Label)
         progress3View = UIProgressView()
         progress3View.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(progress3View)
-        progress3View.progress = 0.7
+        progress3View.progress = Float(count) / Float(allCount)
 
         NSLayoutConstraint.activate([
             member3Button.topAnchor.constraint(equalTo: progress1View.bottomAnchor, constant: 30),
@@ -441,7 +442,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
             dispatchGroup.notify(queue: .main) {
                 let memberCountArray = memberDocumentCounts.sorted { $0.value > $1.value }
                 print("Member document counts: \(memberCountArray)")
-                setUp(memberCount: memberDocumentCounts.count, memberList: memberDocumentCounts)
+                setUp(memberCount: memberDocumentCounts.count, memberList: memberCountArray)
             }
         }
 
