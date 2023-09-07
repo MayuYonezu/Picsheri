@@ -1,5 +1,7 @@
 import UIKit
 import TOCropViewController
+import Firebase
+import FirebaseFirestore
 
 final class MemberViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate, TOCropViewControllerDelegate {
     
@@ -7,6 +9,10 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
     private var progress1View: UIProgressView!
     private var progress2View: UIProgressView!
     private var progress3View: UIProgressView!
+
+    private var members: [String] = []
+    private var allMembers: [Member] = []
+    private var memberCount = 0
 
     private let reuseIdentifier = "Cell"
     let images: [UIImage] = [UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!, UIImage(named: "profile")!] // 表示する画像
@@ -120,10 +126,14 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "mainYellow")
-        setUpNavigation()
-        setUp()
         memberCollectionView.delegate = self
         memberCollectionView.dataSource = self
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchMemberDocumentCounts()
+        setUpNavigation()
     }
 
     private func setUpNavigation() {
@@ -156,12 +166,17 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         ]
         navigationController?.navigationBar.titleTextAttributes = titleAttributes
 
-        member1Button.addTarget(self, action: #selector(memberButtonPressed), for: .touchUpInside)
+        member1Button.addTarget(self, action: #selector(member1ButtonPressed), for: .touchUpInside)
         member2Button.addTarget(self, action: #selector(memberButtonPressed), for: .touchUpInside)
         member3Button.addTarget(self, action: #selector(memberButtonPressed), for: .touchUpInside)
     }
 
     @objc func memberButtonPressed() {
+        let memberProfileViewController = MemberProfileViewController()
+        navigationController?.pushViewController(memberProfileViewController, animated: true)
+    }
+
+    @objc func member1ButtonPressed() {
         let memberProfileViewController = MemberProfileViewController()
         navigationController?.pushViewController(memberProfileViewController, animated: true)
     }
@@ -217,33 +232,46 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
         cropViewController.dismiss(animated: true, completion: nil)
     }
 
-    private func setUp() {
+    private func setUp(memberCount: Int, memberList: [Member]) {
+        let totalValue = memberList.map { $0.documentCount }.reduce(0, +)
+        print("Total Value: \(totalValue)")
+        
+        if memberList.count >= 1 {
+            let firstMember = memberList[0]
+            addMember1UI(name: firstMember.name, count: firstMember.documentCount, allCount: totalValue)
+            print("1st Key: \(firstMember.name), 1st Value: \(firstMember.documentCount)")
+        }
+
+        if memberList.count >= 2 {
+            let secondMember = memberList[1]
+            addMember2UI(name: secondMember.name, count: secondMember.documentCount, allCount: totalValue)
+            print("2nd Key: \(secondMember.name), 2nd Value: \(secondMember.documentCount)")
+        }
+
+        if memberList.count >= 3 {
+            let thirdMember = memberList[2]
+            addMember3UI(name: thirdMember.name, count: thirdMember.documentCount, allCount: totalValue)
+            print("3rd Key: \(thirdMember.name), 3rd Value: \(thirdMember.documentCount)")
+        }
+
+        if memberList.count >= 4 {
+            addCollectionView()
+        }
+        addPlusButton()
+        memberCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+    }
+
+    private func addMember1UI(name: String, count: Int, allCount: Int) {
+        member1Label.text = name
+        
         view.addSubview(member1Button)
         view.addSubview(member1Label)
-        view.addSubview(member2Button)
-        view.addSubview(member2Label)
-        view.addSubview(member3Button)
-        view.addSubview(member3Label)
-        view.addSubview(memberCollectionView)
         
         // progress1Viewをインスタンス化
         progress1View = UIProgressView()
         progress1View.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(progress1View)
-        
-        // progress2Viewをインスタンス化
-        progress2View = UIProgressView()
-        progress2View.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(progress2View)
-        
-        // progress2Viewをインスタンス化
-        progress3View = UIProgressView()
-        progress3View.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(progress3View)
-
-        // メモリービューを開いたときに少し右側にスクロール
-        let xOffset = CGFloat(20) // スクロールする横方向のオフセット
-        memberCollectionView.setContentOffset(CGPoint(x: xOffset, y: 0), animated: false)
+        progress1View.progress = Float(count) / Float(allCount)
 
         NSLayoutConstraint.activate([
             member1Button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
@@ -251,7 +279,7 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
             member1Button.widthAnchor.constraint(equalToConstant: 100),
             member1Button.heightAnchor.constraint(equalToConstant: 100)
         ])
-
+        
         NSLayoutConstraint.activate([
             member1Label.topAnchor.constraint(equalTo: member1Button.bottomAnchor, constant: 10),
             member1Label.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0)
@@ -263,7 +291,18 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
             progress1View.widthAnchor.constraint(equalToConstant: 100),
             progress1View.heightAnchor.constraint(equalToConstant: 5)
         ])
+    }
 
+
+    private func addMember2UI(name: String, count: Int, allCount: Int) {
+        member2Label.text = name
+        view.addSubview(member2Button)
+        view.addSubview(member2Label)
+        progress2View = UIProgressView()
+        progress2View.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(progress2View)
+        progress2View.progress = Float(count) / Float(allCount)
+        
         NSLayoutConstraint.activate([
             member2Button.topAnchor.constraint(equalTo: progress1View.bottomAnchor, constant: 30),
             member2Button.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -90),
@@ -282,6 +321,16 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
             progress2View.widthAnchor.constraint(equalToConstant: 80),
             progress2View.heightAnchor.constraint(equalToConstant: 5)
         ])
+    }
+
+    private func addMember3UI(name: String, count: Int, allCount: Int) {
+        member3Label.text = name
+        view.addSubview(member3Button)
+        view.addSubview(member3Label)
+        progress3View = UIProgressView()
+        progress3View.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(progress3View)
+        progress3View.progress = Float(count) / Float(allCount)
 
         NSLayoutConstraint.activate([
             member3Button.topAnchor.constraint(equalTo: progress1View.bottomAnchor, constant: 30),
@@ -301,14 +350,22 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
             progress3View.widthAnchor.constraint(equalToConstant: 80),
             progress3View.heightAnchor.constraint(equalToConstant: 5)
         ])
+    }
 
+    private func addCollectionView() {
+        view.addSubview(memberCollectionView)
+        let xOffset = CGFloat(20)
+        memberCollectionView.setContentOffset(CGPoint(x: xOffset, y: 0), animated: false)
+        memberCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         NSLayoutConstraint.activate([
             memberCollectionView.topAnchor.constraint(equalTo: progress3View.bottomAnchor, constant: 30),
             memberCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             memberCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             memberCollectionView.heightAnchor.constraint(equalToConstant: 80)
         ])
+    }
 
+    private func addPlusButton() {
         if let tabBarSuperview = tabBarController?.view {
             tabBarSuperview.addSubview(plusButton)
             // 中央に配置する制約を設定
@@ -319,13 +376,6 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
                 plusButton.heightAnchor.constraint(equalToConstant: 60)
             ])
         }
-
-        // 貢献度
-        progress1View.progress = 0.9
-        progress2View.progress = 0.3
-        progress3View.progress = 0.2
-
-        memberCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -357,5 +407,61 @@ final class MemberViewController: UIViewController, UICollectionViewDelegate, UI
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let memberProfileViewController = MemberProfileViewController() // ここでは適切な初期化方法に変更してください
         navigationController?.pushViewController(memberProfileViewController, animated: true)
+    }
+
+    private func fetchMemberDocumentCounts() {
+        let db = Firestore.firestore()
+        let membersCollection = db.collection("users").document(UserModel.shared.uid ?? "").collection("members")
+        
+        membersCollection.getDocuments { [self] querySnapshot, error in
+            if let error = error {
+                print("Error fetching members: \(error.localizedDescription)")
+                return
+            }
+
+            var members: [Member] = [] // Member オブジェクトを格納する配列
+            
+            let dispatchGroup = DispatchGroup()
+            
+            for document in querySnapshot!.documents {
+                let memberData = document.data()
+                var member = Member(data: memberData) // Firestore データから Member オブジェクトを作成
+                members.append(member) // Member オブジェクトを配列に追加
+
+                dispatchGroup.enter()
+                
+                let memoryCollection = document.reference.collection("memory")
+                memoryCollection.getDocuments { subQuerySnapshot, subError in
+                    if let subError = subError {
+                        print("Error fetching memory collection: \(subError.localizedDescription)")
+                    } else {
+                        let documentCount = subQuerySnapshot?.documents.count ?? 0
+                        member.documentCount = documentCount // メモリのドキュメント数を更新
+                    }
+                    
+                    dispatchGroup.leave()
+                }
+            }
+            
+            dispatchGroup.notify(queue: .main) {
+                let memberCountArray = members.sorted { $0.documentCount > $1.documentCount }
+                print("Members sorted by document count: \(memberCountArray)")
+                self.setUp(memberCount: members.count, memberList: memberCountArray)
+            }
+        }
+    }
+}
+
+struct Member {
+    let name: String
+    let imageURL: String?
+    let documentID: String?
+    var documentCount: Int
+    
+    init(data: [String: Any]) {
+        self.name = data["member"] as? String ?? ""
+        self.imageURL = data["imageURL"] as? String ?? ""
+        self.documentID = data["documentID"] as? String ?? ""
+        self.documentCount = data["count"] as? Int ?? 0
     }
 }
