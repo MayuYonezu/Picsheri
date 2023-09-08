@@ -21,6 +21,7 @@
 		036243BD2AA24ECF00C5D807 /* MemberProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036243BC2AA24ECF00C5D807 /* MemberProfileViewController.swift */; };
 		036243C02AA2702F00C5D807 /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036243BF2AA2702F00C5D807 /* LoginPresenter.swift */; };
 		036243C72AA4689D00C5D807 /* TOCropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = 036243C62AA4689D00C5D807 /* TOCropViewController */; };
+		036243F82AAB395D00C5D807 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 036243F72AAB395D00C5D807 /* Color.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		031346DC2AA23402009AAA0A /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		036243BC2AA24ECF00C5D807 /* MemberProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberProfileViewController.swift; sourceTree = "<group>"; };
 		036243BF2AA2702F00C5D807 /* LoginPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
+		036243F72AAB395D00C5D807 /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 				031346C52AA09C06009AAA0A /* Assets.xcassets */,
 				031346C72AA09C06009AAA0A /* LaunchScreen.storyboard */,
 				031346CA2AA09C06009AAA0A /* Info.plist */,
+				036243F72AAB395D00C5D807 /* Color.xcassets */,
 			);
 			path = Picheri;
 			sourceTree = "<group>";
@@ -180,6 +183,7 @@
 			files = (
 				031346C92AA09C06009AAA0A /* LaunchScreen.storyboard in Resources */,
 				031346C62AA09C06009AAA0A /* Assets.xcassets in Resources */,
+				036243F82AAB395D00C5D807 /* Color.xcassets in Resources */,
 				031346C42AA09C05009AAA0A /* Main.storyboard in Resources */,
 				031346D42AA09D77009AAA0A /* Shrikhand-Regular.otf in Resources */,
 			);
